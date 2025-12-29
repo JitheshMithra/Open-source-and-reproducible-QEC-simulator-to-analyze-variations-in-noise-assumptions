@@ -54,4 +54,5 @@ Will be completed when project is tangible
 
 Copyright (c) [2025] [Jithesh Mithra].
 It is licensed under the MIT License, available at [https://github.com/JitheshMithra/Open-source-reproducible-simulator-to-analyze-noise-assumptions-in-quantum-error-correction/].
+
 Also reference License page in files.
