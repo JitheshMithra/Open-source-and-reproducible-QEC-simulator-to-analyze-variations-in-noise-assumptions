@@ -17,6 +17,7 @@ This tool makes those assumptions inspectable, transparent and reproducible, thu
   - Will apply a repitition code
   - Will decode using majority-vote decoding
   - Measures logical error as a function of physical error rate
+
 Primary output is essentially a standard diagnostic plot used in many quantum error correction research - being logical error rate vs physical error rate, but for different code sizes.
 
 **Noise Model:**
