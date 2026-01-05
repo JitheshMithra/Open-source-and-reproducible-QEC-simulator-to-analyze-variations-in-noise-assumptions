@@ -46,6 +46,7 @@ Currently:
   - no correlated errors
   - classical repetition code
   - majority vote decoding
+
 This project does not attempt to create or show new error-correction codes or to prove theoretical thresholds and boundaries. It is made and intended to be used as a measurement and analysis tool, **NOT** a theory checker or unfound breakthrough, just an easy tool for all to use.
 
 **Project status:**
