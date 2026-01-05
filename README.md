@@ -3,7 +3,7 @@
 **Status:** Baseline code/implementation
 # Open source and reproducible QEC simulator to analyze variations in noise assumptions
 ## Overview:
-This project is meant to be an open‑source, reproducible, research-grade, and reusable simulation tool made to analyze and simulate how noise assumptions affect the performance of quantum error correction, allowing for tweaks and slight changes if needed.
+This project is meant to be an open‑source, reproducible, research-grade, and reusable simulation tool made to analyze and simulate how noise assumptions affect the performance of quantum error correction.
 Quantum error correction depends strongly on assumed noise models, yet many existing simulations are held to specific experiments or papers, and are not open to the public and far-reaching educated use. This tool gives a simple and clear framework for measuring and simulating how error correction performance changes as noise changes and varies.
 Simply stated: This tool aims to analyze error correction performance under explicit noise assumptions than measuring noise directly from hardware coded with the python language.
 
