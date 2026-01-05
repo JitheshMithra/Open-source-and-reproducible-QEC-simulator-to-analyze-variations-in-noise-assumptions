@@ -12,7 +12,7 @@ This tool makes those assumptions inspectable, transparent and reproducible, thu
   - understand failure behaviors
   - reproduce and resimulate baseline behaviors easily
 
-**This tool aims to:**
+### This tool aims to:
   - Simulate bit-flip noise
   - Will apply a repitition code
   - Will decode using majority-vote decoding
