@@ -79,7 +79,7 @@ LICENSE
 .gitignore
 ```
 ### Running the simulation:
-All simulations are excecuted from the src directory
+All simulations are executed from the src directory
 ```bash
 #example simulation:
 cd src
