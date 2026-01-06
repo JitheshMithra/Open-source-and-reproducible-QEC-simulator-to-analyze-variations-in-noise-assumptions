@@ -96,6 +96,7 @@ Each run will generate timestamped results directory which contains:
   - plot.png: Static plot image of logical error rate vs physical error rate
   - plot.html: interactive Plotly html graph, useful for visualization
   - QECsim_noise_results.txt: Table numerical values
+
 These values/outputs will show direct comparison of logical error reduction across different code sizes under specified noise assumptions
 
 ### Reproducibility:
