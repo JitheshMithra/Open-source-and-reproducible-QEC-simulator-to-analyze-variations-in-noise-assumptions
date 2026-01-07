@@ -1,4 +1,4 @@
-**Current Version:** v1.0
+**Current Version:** v1.0.1
 
 **Status:** Baseline code/implementation
 # Open source and reproducible QEC simulator to analyze variations in noise assumptions
