@@ -106,6 +106,7 @@ This tool takes a noise assumption as input and shows you what error correction 
 
 **Future additions (v2 plans):**
   - Extended noise models (biased, correlated)
+  - Threshold analysis for SURE
   - Implement thresholds and acknowledge them in the system
   - Log scale plots for Monte Carlo (users can plot LER on a log scale, clear error suppression, effective distance scaling)
   - Seed control per-p (use rng across entire sweep, improves statistical independence and interpretation)
@@ -122,6 +123,8 @@ This tool takes a noise assumption as input and shows you what error correction 
 
 ### Acknowledgements:
 - Special thanks to _Daniel Strano_, developer of [Qrack](https://github.com/unitaryfoundation/qrack), from the Unitary Foundation for external review and consistent feedback and mentoring on my methodology
+- Special thanks to Dr. Haining Pan, University of Florida, for discussion about possible directions and feedback on assumptions
+- Special thanks to Dr. Zebo Yang, Florida Atlantic University, for external review and feedback
 
 ### License:
 If used or mentioned in published works please cite in the recommended format and reference this repository.
