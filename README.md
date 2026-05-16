@@ -1,6 +1,6 @@
 **Current Version:** v1.2
 
-**Status:** Baseline implementation with analytical validation (ACTIVE)
+**Status:** Reproducible baseline framework with analytical validation (ACTIVE)
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.19410366.svg)](https://doi.org/10.5281/zenodo.19410366) 
 ![License](https://img.shields.io/badge/License-MIT-green) 
