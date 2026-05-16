@@ -1,17 +1,15 @@
 **Current Version:** v1.2
 
 **Status:** Baseline implementation with analytical validation; ACTIVE
-# QECops - Reproducible Quantum Error Correction Simulator 
+# QECops 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.19410366.svg)](https://doi.org/10.5281/zenodo.19410366) 
 ![License](https://img.shields.io/badge/License-MIT-green) 
 ![Python](https://img.shields.io/badge/Python-3.10-blue) 
 ![Field](https://img.shields.io/badge/Field-quant--ph-purple) 
 
-**Example Result:**
-Logical error rate vs physical error rate for n=3,5,7 repetition codes, with analytical (binomial)
-overlay and absolute error subplot on log scale
-
-<img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/abdf2ea5-76fb-451e-8e4e-10e4b5076528" />
+**View Example Results in the ExampleResult.png stored in the repository
+**
+[Trial # (1).pdf](https://github.com/user-attachments/files/27858618/Trial.1.pdf)
 
 This tool is a lightweight, open-source simulator for studying how noise assumptions affect Quantum Error Correction (QEC) performance. The question that it seeks to answer is: _How sensitive are QEC results to specific noise models?_
 
