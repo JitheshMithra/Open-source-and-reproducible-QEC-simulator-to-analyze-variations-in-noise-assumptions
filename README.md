@@ -15,7 +15,7 @@
 
 QECops is a lightweight and open-source simulation framework for studying how noise assumptions influence logical error behavior in quantum error correction (QEC). The question that it seeks to answer is: _How sensitive are QEC results to specific noise models?_
 
-QECops simulates how physical noise models translate into logical error rates in quantum error correction codes. It combines numerical simulation with analytical validation to study error behavior in repetition codes, and sticks to its core value of reproducibility among trials.
+This tool simulates how physical noise models translate into logical error rates in quantum error correction codes. It combines numerical simulation with analytical validation to study error behavior in repetition codes, and sticks to its core value of reproducibility among trials.
 
 ### What it does
   - This tool applies independent bit flip noise at rate _p_ to a repetition code of length _n_
