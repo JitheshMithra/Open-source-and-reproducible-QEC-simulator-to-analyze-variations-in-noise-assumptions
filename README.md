@@ -15,7 +15,7 @@
 
 QECops is a lightweight and open-source simulation framework for studying how noise assumptions influence logical error behavior in quantum error correction (QEC). The question that it seeks to answer is: _How sensitive are QEC results to specific noise models?_
 
-This tool simulates how physical noise models translate into logical error rates in quantum error correction codes. It combines numerical simulation with analytical validation to study error behavior in repetition codes, and sticks to its core value of reproducibility among trials.
+This tool simulates how physical noise models translate into logical error rates in quantum error correction codes. It combines numerical simulation with analytical validation to study error behavior in repetition codes, with reproducibility through fixed seeds and saved outputs.
 
 ### What it does
   - This tool applies independent bit flip noise at rate _p_ to a repetition code of length _n_
@@ -24,7 +24,7 @@ This tool simulates how physical noise models translate into logical error rates
   - This tool computes the exact analytical baseline using the binomial distribution model
   - It will output a plot with both curves and an absolute error subplot (log-scaled) to validate the agreement
 
-Most QEC tools are held to large institutions or require significant setup. This tool runs from the command line and has no other dependencies, being fully reproducible with fixed seed.
+Most QEC tools are held to large institutions or require heavier setup/specialized environments. This tool runs locally from the command line and has no other dependencies, being fully reproducible with fixed seed.
 
 **Current Project structure:**
 ```
@@ -50,7 +50,7 @@ A detailed explanation of the methodology, experiments, and results is available
 
 **DOI**: [https://doi.org/10.5281/zenodo.19410366](https://doi.org/10.5281/zenodo.19410366)
 
-**See /REPORTS for excecuted experiments and more on the stored technical reports related to this project and its methodology**
+**See /REPORTS for executed experiments and more on the stored technical reports related to this project and its methodology**
 
 ## Getting Started:
 ### Installation:
