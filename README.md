@@ -1,13 +1,10 @@
 **Current Version:** v1.2
 
 **Status:** Baseline implementation with analytical validation; ACTIVE
-# QECops 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.19410366.svg)](https://doi.org/10.5281/zenodo.19410366) 
 ![License](https://img.shields.io/badge/License-MIT-green) 
 ![Python](https://img.shields.io/badge/Python-3.10-blue) 
 ![Field](https://img.shields.io/badge/Field-quant--ph-purple) 
-
-**View Example Results in the ExampleResult.png stored in the repository**
 
 <img width="702" height="197" alt="image" src="https://github.com/user-attachments/assets/940d5ead-d342-42a9-8c86-4aefb890cbd0" />
 
