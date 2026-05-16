@@ -7,9 +7,9 @@
 ![Python](https://img.shields.io/badge/Python-3.10-blue) 
 ![Field](https://img.shields.io/badge/Field-quant--ph-purple) 
 
-**View Example Results in the ExampleResult.png stored in the repository
-**
-[Trial # (1).pdf](https://github.com/user-attachments/files/27858618/Trial.1.pdf)
+**View Example Results in the ExampleResult.png stored in the repository**
+
+<img width="702" height="197" alt="image" src="https://github.com/user-attachments/assets/940d5ead-d342-42a9-8c86-4aefb890cbd0" />
 
 This tool is a lightweight, open-source simulator for studying how noise assumptions affect Quantum Error Correction (QEC) performance. The question that it seeks to answer is: _How sensitive are QEC results to specific noise models?_
 
