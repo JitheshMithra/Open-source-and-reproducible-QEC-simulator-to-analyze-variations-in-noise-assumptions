@@ -24,7 +24,7 @@ This tool simulates how physical noise models translate into logical error rates
   - This tool computes the exact analytical baseline using the binomial distribution model
   - It will output a plot with both curves and an absolute error subplot (log-scaled) to validate the agreement
 
-Most QEC tools are held to large institutions or require heavier setup/specialized environments. This tool runs locally from the command line and has no other dependencies, being fully reproducible with fixed seed.
+Most QEC tools need instituitional access or require complex environments and setup. This tool runs locally from the command line and has no other dependencies, being fully reproducible with fixed seed.
 
 **Current Project structure:**
 ```
@@ -47,6 +47,8 @@ ExampleResult.png (view an example result here)
 ```
 ## Technical Reports:
 A detailed explanation of the methodology, experiments, and results is available in the REPORTS folder.
+
+Simulation results show strong agreement with analytical predictions across code distances n=3 to n=11.
 
 **DOI**: [https://doi.org/10.5281/zenodo.19410366](https://doi.org/10.5281/zenodo.19410366)
 
