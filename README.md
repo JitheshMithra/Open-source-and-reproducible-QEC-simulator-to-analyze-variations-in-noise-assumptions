@@ -8,7 +8,7 @@
 ![Field](https://img.shields.io/badge/Field-quant--ph-purple) 
 
 <p align="center">
-  <img width="1292" height="395" alt="image" src="https://github.com/user-attachments/assets/c6391dd8-b7e3-476c-8776-b9ea1966fc09" />
+   <img width="904" height="276" alt="image-removebg-preview" src="https://github.com/user-attachments/assets/7c6005da-044d-4053-965a-f7384461650d" />
 </p>
 
 
