@@ -108,7 +108,10 @@ python -m QECops.plot --n 3 5 7 --trials 10000 --seed 42 --pmin 0.05 --pmax 0.45
 ```bash
 python -m QECops.plot --n 3 5 7 --trials 10000 --seed 42 --pmin 0.05 --pmax 0.55 --pstep 0.05 --noise depolarizing --bootstrap --nbootstrap 1000 --showthresholds
 ```
-
+**Biased noise (sweeping X error rate, fixed Z):**
+```bash
+python -m QECops.plot --n 3 5 7 --trials 10000 --seed 42 --pmin 0.05 --pmax 0.55 --pstep 0.05 --noise biased --sweepparam px --pz 0.05 --bootstrap --nbootstrap 1000 --showthresholds
+```
 ### Command line arguments
 
 | Argument | Description | Default |
