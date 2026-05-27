@@ -162,9 +162,11 @@ Each run generates a timestamped results directory containing:
 - Circuit-level noise modeling
 - Cyclic QEC with multiple syndrome rounds
 - Surface code support
+- Density Matrices/Quantum State simulation/Superposition states
 - [Qiskit](https://github.com/Qiskit/qiskit)/[Stim](https://github.com/quantumlib/stim) comparison layer for cross-validation
 - Per-p seed control for statistical independence
 - pip installable package
+- Relative Error Subplots
 
 ### Acknowledgements:
 - Special thanks to _Daniel Strano_, developer of [Qrack](https://github.com/unitaryfoundation/qrack), from the Unitary Foundation for external review and consistent feedback and mentoring on my methodology
