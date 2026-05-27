@@ -3,7 +3,53 @@ import random
 import math
 from .noise import applynoise
 from .decode import majoritydecoder
+import numpy as np
 
+def bootstrapthreshold(results_by_distance, nbootstrap=1000, confidence=0.95):
+    """
+    Bootstrap confidence intervals on pseudo-threshold estimates.
+    Resamples LER values within stderr bounds nbootstrap times,
+    finds crossing each time, returns CI across crossings.
+    """
+    rng = np.random.default_rng(0)
+    distances = sorted(results_by_distance.keys())
+    out = {}
+
+    for i in range(len(distances) - 1):
+        d1, d2 = distances[i], distances[i+1]
+        r1 = results_by_distance[d1]
+        r2 = results_by_distance[d2]
+
+        pvals = [r["physical_error_rate"] for r in r1]
+        l1 = np.array([r["LER"] for r in r1])
+        l2 = np.array([r["LER"] for r in r2])
+        e1 = np.array([r["stderr"] for r in r1])
+        e2 = np.array([r["stderr"] for r in r2])
+
+        hits = []
+        for _ in range(nbootstrap):
+            s1 = np.clip(rng.normal(l1, e1), 0, 1)
+            s2 = np.clip(rng.normal(l2, e2), 0, 1)
+            diff = s2 - s1
+            for j in range(len(diff) - 1):
+                if diff[j] * diff[j+1] < 0:
+                    p1, p2 = pvals[j], pvals[j+1]
+                    hits.append(p1 - diff[j] * (p2-p1) / (diff[j+1]-diff[j]))
+                    break
+
+        if not hits:
+            out[(d1, d2)] = None
+        else:
+            h = np.array(hits)
+            a = (1 - confidence) / 2
+            out[(d1, d2)] = {
+                "mean": float(h.mean()),
+                "lower": float(np.quantile(h, a)),
+                "upper": float(np.quantile(h, 1-a)),
+                "std": float(h.std())
+            }
+
+    return out
 #turns one bit into a repetition code
 def encoderepetition(logicalbit, n):
     if logicalbit not in (0, 1):

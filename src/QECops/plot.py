@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 import plotly.graph_objects as go
 
 from .analytical import analytical_logical_error
-from .simulation import distancesweep, estimatepseudothreshold, thresholdscalingsummary
+from .simulation import distancesweep, estimatepseudothreshold, bootstrapthreshold, thresholdscalingsummary
 
 
 def argparser():
@@ -35,6 +35,9 @@ def argparser():
     parser.add_argument("--logscale", action="store_true")
     parser.add_argument("--showthresholds", action="store_true")
     parser.add_argument("--export", choices=["txt", "csv", "json", "all"], default="all")
+    parser.add_argument("--bootstrap", action="store_true")
+    parser.add_argument("--nbootstrap", type=int, default=1000)
+    parser.add_argument("--confidence", type=float, default=0.95)
 
     parser.add_argument("--mode", choices=["phenomenological", "circuit"], default="phenomenological")
     parser.add_argument("--cyclic", action="store_true")
@@ -99,7 +102,7 @@ def build_noise_params(args):
     return {}
 
 
-def print_readable_summary(results, thresholds, summary, args):
+def print_readable_summary(results, thresholds, ci, summary, args):
     print("\nQECops Simulation Summary")
     print("--------------------------")
 
@@ -125,7 +128,16 @@ def print_readable_summary(results, thresholds, summary, args):
             if value is None:
                 print(f"d={pair[0]} vs d={pair[1]}: no crossing found")
             else:
-                print(f"d={pair[0]} vs d={pair[1]}: p ≈ {value:.4f}")
+                print(f"d={pair[0]} vs d={pair[1]}: p ~= {value:.4f}")
+
+    if ci:
+        print(f"\nPseudo-threshold confidence intervals ({int(args.confidence*100)}%)")
+        print("--------------------------------------------")
+        for pair, val in ci.items():
+            if val is None:
+                print(f"d={pair[0]} vs d={pair[1]}: no crossing found")
+            else:
+                print(f"d={pair[0]} vs d={pair[1]}: {val['mean']:.4f} [{val['lower']:.4f}, {val['upper']:.4f}] ±{val['std']:.4f}")
 
     print("\nScaling behavior")
     print("----------------")
@@ -134,7 +146,7 @@ def print_readable_summary(results, thresholds, summary, args):
         print(f"p={row['physical_error_rate']:.3f}: {status}")
 
 
-def export_results(resultsdir, results, thresholds, summary, export_type, args):
+def export_results(resultsdir, results, thresholds, ci, summary, export_type, args):
     rows = []
 
     for d, curve in sorted(results.items()):
@@ -167,7 +179,6 @@ def export_results(resultsdir, results, thresholds, summary, export_type, args):
                         f"±{r['stderr']:.6f}      "
                         f"{r['failures']}/{r['trials']}\n"
                     )
-
                 f.write("\n")
 
             f.write("Pseudo-threshold estimates\n")
@@ -180,7 +191,16 @@ def export_results(resultsdir, results, thresholds, summary, export_type, args):
                     if value is None:
                         f.write(f"d={pair[0]} vs d={pair[1]}: no crossing found\n")
                     else:
-                        f.write(f"d={pair[0]} vs d={pair[1]}: p ≈ {value:.4f}\n")
+                        f.write(f"d={pair[0]} vs d={pair[1]}: p ~= {value:.4f}\n")
+
+            if ci:
+                f.write(f"\nConfidence intervals ({int(args.confidence*100)}%)\n")
+                f.write("--------------------------\n")
+                for pair, val in ci.items():
+                    if val is None:
+                        f.write(f"d={pair[0]} vs d={pair[1]}: no crossing found\n")
+                    else:
+                        f.write(f"d={pair[0]} vs d={pair[1]}: {val['mean']:.4f} [{val['lower']:.4f}, {val['upper']:.4f}]\n")
 
     if export_type in ["csv", "all"]:
         with open(resultsdir / "raw_results.csv", "w", newline="") as f:
@@ -189,11 +209,17 @@ def export_results(resultsdir, results, thresholds, summary, export_type, args):
             writer.writerows(rows)
 
     if export_type in ["json", "all"]:
+        ci_serializable = {}
+        if ci:
+            for k, v in ci.items():
+                ci_serializable[str(k)] = v
+
         with open(resultsdir / "raw_results.json", "w") as f:
             json.dump(
                 {
                     "results": rows,
                     "thresholds": {str(k): v for k, v in thresholds.items()},
+                    "confidence_intervals": ci_serializable,
                     "scaling_summary": summary,
                 },
                 f,
@@ -201,20 +227,25 @@ def export_results(resultsdir, results, thresholds, summary, export_type, args):
             )
 
 
-def make_threshold_plot(resultsdir, results, thresholds, args):
+def make_threshold_plot(resultsdir, results, thresholds, ci, args):
     fig, ax = plt.subplots(figsize=(8, 6))
 
     for d, curve in sorted(results.items()):
         x = [r["sweep_value"] for r in curve]
         y = [max(r["LER"], 1 / r["trials"]) for r in curve]
         err = [max(r["stderr"], 1 / r["trials"]) for r in curve]
-
         ax.errorbar(x, y, yerr=err, marker="o", capsize=3, label=f"d={d}")
 
     if args.showthresholds and thresholds:
         for pair, threshold in thresholds.items():
             if threshold is not None:
-                ax.axvline(threshold, linestyle=":", label=f"threshold {pair} ≈ {threshold:.3f}")
+                ax.axvline(threshold, linestyle=":", label=f"threshold {pair} ~= {threshold:.3f}")
+
+    if ci:
+        for pair, val in ci.items():
+            if val is not None:
+                ax.axvspan(val["lower"], val["upper"], alpha=0.1,
+                          label=f"{int(args.confidence*100)}% CI {pair}")
 
     ax.set_xlabel(args.sweepparam)
     ax.set_ylabel("Logical error rate")
@@ -278,14 +309,7 @@ def make_interactive_plot(resultsdir, results, args):
         x = [r["sweep_value"] for r in curve]
         y = [max(r["LER"], 1 / r["trials"]) for r in curve]
 
-        fig.add_trace(
-            go.Scatter(
-                x=x,
-                y=y,
-                mode="lines+markers",
-                name=f"d={d} Monte Carlo",
-            )
-        )
+        fig.add_trace(go.Scatter(x=x, y=y, mode="lines+markers", name=f"d={d} Monte Carlo"))
 
     fig.update_layout(
         title=f"QECops LER vs {args.sweepparam}, noise={args.noise}",
@@ -328,15 +352,19 @@ def plotrun(args):
         print("Warning: pseudo-thresholds are only standard when sweeping p.")
         thresholds = {}
 
+    ci = None
+    if args.bootstrap and thresholds:
+        ci = bootstrapthreshold(results, nbootstrap=args.nbootstrap, confidence=args.confidence)
+
     summary = thresholdscalingsummary(results)
 
-    print_readable_summary(results, thresholds, summary, args)
-    export_results(resultsdir, results, thresholds, summary, args.export, args)
+    print_readable_summary(results, thresholds, ci, summary, args)
+    export_results(resultsdir, results, thresholds, ci, summary, args.export, args)
 
     if args.plotmode == "validation":
         make_validation_plot(resultsdir, results, args)
     else:
-        make_threshold_plot(resultsdir, results, thresholds, args)
+        make_threshold_plot(resultsdir, results, thresholds, ci, args)
 
     make_interactive_plot(resultsdir, results, args)
 
