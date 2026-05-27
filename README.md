@@ -168,8 +168,8 @@ Each run generates a timestamped results directory containing:
 
 ### Acknowledgements:
 - Special thanks to _Daniel Strano_, developer of [Qrack](https://github.com/unitaryfoundation/qrack), from the Unitary Foundation for external review and consistent feedback and mentoring on my methodology
-- Special thanks to Dr. Haining Pan, University of Florida, for discussion about possible directions and feedback on assumptions
-- Special thanks to Dr. Zebo Yang, Florida Atlantic University, for external review and feedback
+- Special thanks to _Dr. Haining Pan_, University of Florida, for discussion about possible directions and feedback on assumptions
+- Special thanks to _Dr. Zebo Yang_, Florida Atlantic University, for external review and feedback
 
 ### License:
 If used or mentioned in published works please cite in the recommended format and reference this repository.
