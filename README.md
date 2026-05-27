@@ -1,6 +1,6 @@
-**Current Version:** v1.2
+**Current Version:** v2
 
-**Status:** Reproducible baseline framework with analytical validation (ACTIVE)
+**Status:** Comparative noise sensitivity analysis framework with bootstrap threshold estimation (ACTIVE)
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.19410366.svg)](https://doi.org/10.5281/zenodo.19410366) 
 ![License](https://img.shields.io/badge/License-MIT-green) 
@@ -13,18 +13,31 @@
 
 
 
-QECops is a lightweight and open-source simulation framework for studying how noise assumptions influence logical error behavior in quantum error correction (QEC). The question that it seeks to answer is: _How sensitive are QEC results to specific noise models?_
+QECops is a lightweight, open-source simulation framework for studying how noise assumptions influence logical error behavior in quantum error correction (QEC). The question it seeks to answer is: _How sensitive are QEC performance conclusions to the choice of noise model?_
 
-This tool simulates how physical noise models translate into logical error rates in quantum error correction codes. It combines numerical simulation with analytical validation to study error behavior in repetition codes, with reproducibility through fixed seeds and saved outputs.
+This tool simulates how physical noise models translate into logical error rates in repetition codes, compares behavior across four noise models with consistent methodology, and estimates pseudo-thresholds with bootstrap confidence intervals. Everything runs locally from the command line with no institutional access required.
 
 ### What it does
-  - This tool applies independent bit flip noise at rate _p_ to a repetition code of length _n_
-  - It decodes using majority-vote
-  - It sweeps _p_ across a range which you can configure and estimates logical error rate with Monte Carlo estimation model
-  - This tool computes the exact analytical baseline using the binomial distribution model
-  - It will output a plot with both curves and an absolute error subplot (log-scaled) to validate the agreement
+   - Simulates repetition codes of distance d=3, 5, 7 (and beyond) under four noise models
+   - Decodes using majority-vote
+   - Sweeps physical error rate p (or other noise parameters) across a configurable range
+   - Estimates logical error rate (LER) with Monte Carlo simulation
+   - Computes exact analytical baseline using the binomial distribution for bitflip noise
+   - Estimates pseudo-thresholds by finding where LER curves for adjacent distances cross
+   - Computes bootstrap confidence intervals on threshold estimates
+   - Exports results as PNG plots, interactive HTML, CSV, and JSON
+   - Validates simulation against analytical predictions with absolute error subplots
 
 Most QEC tools need instituitional access or require complex environments and setup. This tool runs locally from the command line and has no other dependencies, being fully reproducible with fixed seed.
+
+### Noise Models:
+**Bitflip**: independent per-qubit X errors at rate p. Analytical solution exists via binomial distribution. Used as baseline.
+
+**Depolarizing**: symmetric X/Y/Z errors. Effective flip probability is 2p/3, accounting for the three error channels. Threshold is suppressed relative to bitflip.
+
+**Biased**: asymmetric X and Z error rates via separate px and pz parameters. Z errors are invisible to the classical repetition code. Useful for studying hardware with asymmetric noise.
+
+**Correlated**: spatially propagating errors. A flip at qubit i propagates to qubit i+1 with probability correlation. Models crosstalk and physically realistic error spreading.
 
 **Current Project structure:**
 ```
@@ -70,58 +83,86 @@ pip install -r requirements.txt
 ### Running the simulation:
 All simulations are executed from the src directory
 ```bash
-#example simulation:
 cd src
-python -m QECops.plot --n 3 5 7 --trials 20000 --seed 0 --logicalbit 0 --pmin 0.0 --pmax 0.2 --pstep 0.02
 ```
-Command Line arguments:
-  - --n: one or more ODD repetition-code lengths
-  - --trials: # of Monte Carlo trials per data point
-  - --logicalbit: Logical bit to encode (0 or 1)
-  - --pmin, --pmax, --pstep: Physical error rate sweep parameters
-  - --seed: Random seed for reproducibility
-### Output:
-Each run will generate timestamped results directory which contains:
-  - plot.png: Static plot containing LER vs_p_, Monte Carlo + Analytical results, absolute error subplot
-  - plot.html: interactive Plotly html graph, useful for visualization and analytical curve
-  - QECops_noise_results.txt: Table numerical values
+**Basic bitflip threshold sweep:**
+```bash
+python -m QECops.plot --n 3 5 7 --trials 10000 --seed 42 --pmin 0.05 --pmax 0.55 --pstep 0.05 --noise bitflip --showthresholds
+```
 
-These outputs provide a direct comparison between simulation and analytical predictions, including quantitative validation through the absolute error subplot.
+**With bootstrap confidence intervals:**
+```bash
+python -m QECops.plot --n 3 5 7 --trials 10000 --seed 42 --pmin 0.05 --pmax 0.55 --pstep 0.05 --noise bitflip --bootstrap --nbootstrap 1000 --showthresholds
+```
 
-The framework reproduces expected scaling behavior and highlights how different noise assumptions impact logical error suppression.
+**Validation mode (Monte Carlo vs analytical):**
+```bash
+python -m QECops.plot --n 3 5 7 --trials 20000 --seed 42 --pmin 0.01 --pmax 0.4 --pstep 0.02 --noise bitflip --plotmode validation
+```
 
-### Noise Model and Assumptions:
-- Independent, uncorrelated bit flip noise (for now)
-- Classical repetition code with majority vote decoding
-- Analytical baseline from the binomial distribution
+**Correlated noise sweep:**
+```bash
+python -m QECops.plot --n 3 5 7 --trials 10000 --seed 42 --pmin 0.05 --pmax 0.45 --pstep 0.05 --noise correlated --correlation 0.3 --bootstrap --nbootstrap 1000
+```
 
-This tool takes a noise assumption as input and shows you what error correction looks like under that assumption, it does not implement new codes or claim theoretical thresholds. It does not model hardware directly.
+**Depolarizing noise:**
+```bash
+python -m QECops.plot --n 3 5 7 --trials 10000 --seed 42 --pmin 0.05 --pmax 0.55 --pstep 0.05 --noise depolarizing --bootstrap --nbootstrap 1000 --showthresholds
+```
 
-### Limitations:
-- Noise is assumed to be independent, no correlated or biased errors YET
-- Only repetition codes and majority-vote decoding are currently supported
-- Does not connect with real hardware
-- Assumes product-state initialization (|0...0⟩)
-- Uses a simplified bit-flip noise model
-- Does not yet model full quantum states
-- Not a circuit-level noise model
+### Command line arguments
 
-**Future additions (v2 plans):**
-  - Extended noise models (biased, correlated)
-  - Threshold analysis for SURE
-  - Implement thresholds and acknowledge them in the system
-  - Log scale plots for Monte Carlo (users can plot LER on a log scale, clear error suppression, effective distance scaling)
-  - Seed control per-p (use rng across entire sweep, improves statistical independence and interpretation)
-  - Parameter sweeps BEYOND p 
-  - Optional saving results as JSON or CSV
-  - Switch from absolute error analysis to relative error analysis for better comparing in low probability regions
-  - Superposition states (e.g., Bell, GHZ)
-  - Density matrixes
-  - Circuit-level noise modeling
-  - Exploring more advanced QEC codes using tools like [Stim](https://github.com/quantumlib/Stim)
-  - Front-end UI, like a website
-  - Python library? make it pip installable/Installable Package
-  - analysis layer built on top of Qiskit / existing tools
+| Argument | Description | Default |
+|---|---|---|
+| `--n` | One or more odd code distances | required |
+| `--trials` | Monte Carlo trials per data point | 10000 |
+| `--seed` | Random seed for reproducibility | 0 |
+| `--logicalbit` | Logical bit to encode, 0 or 1 | 0 |
+| `--pmin` | Minimum physical error rate | 0.05 |
+| `--pmax` | Maximum physical error rate | 0.4 |
+| `--pstep` | Step size for error rate sweep | 0.05 |
+| `--noise` | Noise model: bitflip, depolarizing, biased, correlated | bitflip |
+| `--sweepparam` | Parameter to sweep: p, px, pz, correlation | p |
+| `--px` | X error rate for biased noise | 0.05 |
+| `--pz` | Z error rate for biased noise | 0.05 |
+| `--correlation` | Correlation strength for correlated noise | 0.3 |
+| `--fixedp` | Fixed p when sweeping correlation | 0.1 |
+| `--plotmode` | validation or threshold | threshold |
+| `--logscale` | Log scale y-axis | False |
+| `--showthresholds` | Show threshold markers on plot | False |
+| `--bootstrap` | Run bootstrap CI on threshold estimates | False |
+| `--nbootstrap` | Number of bootstrap samples | 1000 |
+| `--confidence` | Confidence level for CI | 0.95 |
+| `--export` | Export format: txt, csv, json, all | all |
+
+### Output
+
+Each run generates a timestamped results directory containing:
+
+   - `threshold_plot.png`: LER vs sweep parameter for all distances with error bars
+   - `validation_plot.png`: Monte Carlo vs analytical with absolute error subplot (validation mode)
+   - `interactive_plot.html`: interactive Plotly visualization
+   - `summary.txt`: readable numerical summary with threshold estimates and CI
+   - `raw_results.csv`: raw results table
+   - `raw_results.json`: full results including threshold estimates and scaling summary
+
+## Limitations
+
+- Phenomenological noise only: no circuit-level gate or measurement noise
+- Repetition code only: no surface codes or other stabilizer codes
+- Majority vote decoding only: no minimum weight perfect matching
+- Classical simulation: no quantum state representation
+- Shared seed across p sweep: not independent per data point
+- No hardware integration
+
+## Future Work
+
+- Circuit-level noise modeling
+- Cyclic QEC with multiple syndrome rounds
+- Surface code support
+- Qiskit comparison layer for cross-validation
+- Per-p seed control for statistical independence
+- pip installable package
 
 ### Acknowledgements:
 - Special thanks to _Daniel Strano_, developer of [Qrack](https://github.com/unitaryfoundation/qrack), from the Unitary Foundation for external review and consistent feedback and mentoring on my methodology
