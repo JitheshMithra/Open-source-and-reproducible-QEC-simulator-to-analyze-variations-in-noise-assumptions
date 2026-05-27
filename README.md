@@ -162,7 +162,7 @@ Each run generates a timestamped results directory containing:
 - Circuit-level noise modeling
 - Cyclic QEC with multiple syndrome rounds
 - Surface code support
-- Qiskit comparison layer for cross-validation
+- [Qiskit](https://github.com/Qiskit/qiskit)/[Stim](https://github.com/quantumlib/stim) comparison layer for cross-validation
 - Per-p seed control for statistical independence
 - pip installable package
 
