@@ -67,9 +67,6 @@ def estimatepseudothreshold(results_by_distance):
             p2= low[j + 1]["physical_error_rate"]
             diff1= high[j]["LER"] - low[j]["LER"]
             diff2 =high[j + 1]["LER"] - low[j + 1]["LER"]
-            if diff1== 0:
-                crossing =p1
-                break
             if diff1*diff2 < 0:
                 crossing=p1 -diff1* (p2 -p1)/(diff2- diff1)
                 break
