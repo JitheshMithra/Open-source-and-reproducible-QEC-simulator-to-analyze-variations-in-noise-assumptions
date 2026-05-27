@@ -74,6 +74,37 @@ def correlatednoise(bits,p,correlation, rng):
     return newbits
 
 def applynoise(bits, rng, noisetype="depolarizing", **params):
+    """
+    Apply a noise model to a list of bits.
+
+    Dispatches to the appropriate noise function based on noisetype.
+
+    Parameters
+    ----------
+    bits : list of int
+        Input bit string, values must be 0 or 1
+    rng : random.Random
+        Random number generator instance for reproducibility
+    noisetype : str, optional
+        Noise model to apply: 'bitflip', 'depolarizing', 'biased', 'correlated'
+        (default 'depolarizing')
+    **params
+        Noise model parameters:
+        - bitflip/depolarizing: p (float) — error probability per bit
+        - biased: px (float), pz (float) — X and Z error probabilities
+        - correlated: p (float), correlation (float) — base flip probability
+          and propagation probability
+
+    Returns
+    -------
+    list of int
+        Noisy bit string after applying the noise model
+
+    Raises
+    ------
+    ValueError
+        If noisetype is not recognized
+    """
     if noisetype == "bitflip":
         return bitflipnoise(bits, params["p"], rng)
     elif noisetype == "depolarizing":
