@@ -55,7 +55,6 @@ REPORTS/
 requirements.txt
 README.md
 LICENSE
-ExampleResult.png (view an example result here)
 .gitignore
 ```
 ## Technical Reports:
