@@ -182,7 +182,7 @@ def estimatepseudothreshold(results_by_distance):
         thresholds[(dlow, dhigh)] = crossing
     return thresholds
 #Sweeps one noise parameter across many values
-def psweep(n,pvalues,trials,seed,logicalbit=0,noisetype="depolarizing",sweepparam="p",**extranoiseparams):
+def psweep(n, pvalues, trials, seed, logicalbit=0, noisetype="depolarizing", sweepparam="p", **extranoiseparams):
     """
     Sweep one noise parameter across a range of values for a single code distance.
 
@@ -195,7 +195,7 @@ def psweep(n,pvalues,trials,seed,logicalbit=0,noisetype="depolarizing",sweeppara
     trials : int
         Number of Monte Carlo trials per data point
     seed : int
-        Random seed for reproducibility
+        Base random seed for reproducibility
     logicalbit : int, optional
         Logical bit to encode, 0 or 1 (default 0)
     noisetype : str, optional
@@ -208,14 +208,15 @@ def psweep(n,pvalues,trials,seed,logicalbit=0,noisetype="depolarizing",sweeppara
     Returns
     -------
     list of dict
-        Each dict contains: LER, stderr, failures, trials, distance, 
+        Each dict contains: LER, stderr, failures, trials, distance,
         noise_type, noise_params, sweep_param, sweep_value, physical_error_rate
     """
     results = []
-    for value in pvalues:
+    for idx, value in enumerate(pvalues):
         noiseparams = extranoiseparams.copy()
         noiseparams[sweepparam] = value
-        result = runtrials(n=n,trials=trials,seed=seed,logicalbit=logicalbit,noisetype=noisetype,**noiseparams)
+        pt_seed = seed + idx * 99991 + n * 7
+        result = runtrials(n=n, trials=trials, seed=pt_seed, logicalbit=logicalbit, noisetype=noisetype, **noiseparams)
         result["sweep_param"] = sweepparam
         result["sweep_value"] = value
 
