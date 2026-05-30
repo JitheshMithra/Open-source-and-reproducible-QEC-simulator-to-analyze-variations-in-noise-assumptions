@@ -2,19 +2,19 @@ from QECops.simulation import robustnessmetric
 
 #using mean threshold from d=3v5 pair across c values
 threshold_by_c = {
-    0.1: 0.4577,
-    0.2: 0.4219,
-    0.3: 0.3788,
-    0.4: 0.3113,
-    0.5: 0.2357
+    0.1: 0.4609,
+    0.2: 0.4220,
+    0.3: 0.3663,
+    0.4: 0.3172,
+    0.5: 0.2372
 }
 
 ci_by_c = {
-    0.1: {"std": 0.0074},
-    0.2: {"std": 0.0066},
-    0.3: {"std": 0.0096},
-    0.4: {"std": 0.0100},
-    0.5: {"std": 0.0109}
+    0.1: {"std": 0.0046},
+    0.2: {"std": 0.0054},
+    0.3: {"std": 0.0056},
+    0.4: {"std": 0.0055},
+    0.5: {"std": 0.0088}
 }
 
 S = robustnessmetric(threshold_by_c, ci_by_c)
