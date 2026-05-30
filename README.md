@@ -164,7 +164,6 @@ Each run generates a timestamped results directory containing:
 - Surface code support
 - Density Matrices/Quantum State simulation/Superposition states
 - [Qiskit](https://github.com/Qiskit/qiskit)/[Stim](https://github.com/quantumlib/stim) comparison layer for cross-validation
-- Per-p seed control for statistical independence
 - pip installable package
 - Relative Error Subplots
 
