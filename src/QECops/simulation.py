@@ -8,7 +8,7 @@ import numpy as np
 def bootstrapthreshold(results_by_distance, nbootstrap=1000, confidence=0.95):
     """
     Bootstrap confidence intervals on pseudo-threshold estimates.
-    Resamples LER values within stderr bounds nbootstrap times,
+    Resamples failure counts from Binomial(N, LER) each iteration,
     finds crossing each time, returns CI across crossings.
     """
     rng = np.random.default_rng(0)
@@ -23,13 +23,13 @@ def bootstrapthreshold(results_by_distance, nbootstrap=1000, confidence=0.95):
         pvals = [r["physical_error_rate"] for r in r1]
         l1 = np.array([r["LER"] for r in r1])
         l2 = np.array([r["LER"] for r in r2])
-        e1 = np.array([r["stderr"] for r in r1])
-        e2 = np.array([r["stderr"] for r in r2])
+        n1 = np.array([r["trials"] for r in r1])
+        n2 = np.array([r["trials"] for r in r2])
 
         hits = []
         for _ in range(nbootstrap):
-            s1 = np.clip(rng.normal(l1, e1), 0, 1)
-            s2 = np.clip(rng.normal(l2, e2), 0, 1)
+            s1 = rng.binomial(n1, l1) / n1
+            s2 = rng.binomial(n2, l2) / n2
             diff = s2 - s1
             for j in range(len(diff) - 1):
                 if diff[j] * diff[j+1] < 0:
@@ -305,12 +305,20 @@ def crossingconsistency(thresholds, ci=None):
             continue
         out[pair] = {"consistent": True, "reason": "crossing found with CI" if ci else "crossing found"}
 
-    #flag if pair estimates diverge too much
-    vals = [thresholds[p] for p in pairs if thresholds[p] is not None]
-    if len(vals) >= 2 and max(vals) - min(vals) > 0.05:
-        for pair in pairs:
-            if thresholds[pair] is not None:
-                out[pair]["consistent"] = False
-                out[pair]["reason"] = "estimates diverge across distance pairs"
+    #flag if pair estimates diverge beyond combined bootstrap uncertainty
+    vals = [(p, thresholds[p]) for p in pairs if thresholds[p] is not None]
+    if len(vals) >= 2:
+        for idx in range(len(vals) - 1):
+            p1, t1 = vals[idx]
+            p2, t2 = vals[idx+1]
+            if ci and ci.get(p1) and ci.get(p2):
+                combined_uncertainty = ci[p1]["std"] + ci[p2]["std"]
+            else:
+                combined_uncertainty = 0.05  # fallback if no CI
+            if abs(t1 - t2) > combined_uncertainty:
+                out[p1]["consistent"] = False
+                out[p1]["reason"] = "estimates diverge beyond combined bootstrap uncertainty"
+                out[p2]["consistent"] = False
+                out[p2]["reason"] = "estimates diverge beyond combined bootstrap uncertainty"
 
     return out
