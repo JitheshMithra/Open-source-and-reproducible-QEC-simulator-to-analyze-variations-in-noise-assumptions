@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 import plotly.graph_objects as go
 
 from .analytical import analytical_logical_error
-from .simulation import distancesweep, estimatepseudothreshold, bootstrapthreshold, thresholdscalingsummary
+from .simulation import distancesweep, estimatepseudothreshold, bootstrapthreshold, thresholdscalingsummary, robustnessmetric, failureboundary, crossingconsistency
 
 
 def argparser():
@@ -367,10 +367,20 @@ def plotrun(args):
         make_threshold_plot(resultsdir, results, thresholds, ci, args)
 
     make_interactive_plot(resultsdir, results, args)
+    boundary = failureboundary(summary)
+    consistency = crossingconsistency(thresholds, ci)
+    if boundary is not None:
+        print(f"\nFailure boundary detected at p = {boundary:.3f}")
+    else:
+        print("\nNo failure boundary detected in swept range")
 
+    print("\nCrossing consistency")
+    print("--------------------")
+    for pair, result in consistency.items():
+        status = "consistent" if result["consistent"] else "inconsistent"
+        print(f"d={pair[0]} vs d={pair[1]}: {status} ({result['reason']})")
     print("\nSaved files:")
     print(resultsdir)
-
 
 def main():
     args = argparser()
