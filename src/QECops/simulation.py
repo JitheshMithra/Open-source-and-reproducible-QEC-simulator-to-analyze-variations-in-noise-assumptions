@@ -259,3 +259,58 @@ def thresholdscalingsummary(results_by_distance):
         summary.append({"physical_error_rate": p,"LERs_by_distance": lers,"error_suppression_with_distance": suppression})
 
     return summary
+
+def robustnessmetric(threshold_by_c, ci_by_c=None):
+    """
+    S = d(threshold)/d(correlation_strength) across swept c values.
+    Numerical derivative with optional propagated CI uncertainty.
+    """
+    cvals = sorted(k for k, v in threshold_by_c.items() if v is not None)
+    out = []
+
+    for i in range(len(cvals) - 1):
+        c1, c2 = cvals[i], cvals[i+1]
+        t1, t2 = threshold_by_c[c1], threshold_by_c[c2]
+        S = (t2 - t1) / (c2 - c1)
+        entry = {"c_mid": (c1+c2)/2, "c1": c1, "c2": c2, "S": S}
+
+        if ci_by_c:
+            s1 = ci_by_c.get(c1, {}).get("std", 0) if ci_by_c.get(c1) else 0
+            s2 = ci_by_c.get(c2, {}).get("std", 0) if ci_by_c.get(c2) else 0
+            entry["S_uncertainty"] = float(np.sqrt(s1**2 + s2**2) / abs(c2-c1))
+
+        out.append(entry)
+    return out
+
+
+def failureboundary(summary):
+    #first p where distance stops helping
+    for row in summary:
+        if not row["error_suppression_with_distance"]:
+            return row["physical_error_rate"]
+    return None
+
+
+def crossingconsistency(thresholds, ci=None):
+    pairs = sorted(thresholds.keys())
+    out = {}
+
+    for pair in pairs:
+        t = thresholds[pair]
+        if t is None:
+            out[pair] = {"consistent": False, "reason": "no crossing found"}
+            continue
+        if ci and ci.get(pair) is None:
+            out[pair] = {"consistent": False, "reason": "no bootstrap crossing"}
+            continue
+        out[pair] = {"consistent": True, "reason": "crossing found with CI" if ci else "crossing found"}
+
+    #flag if pair estimates diverge too much
+    vals = [thresholds[p] for p in pairs if thresholds[p] is not None]
+    if len(vals) >= 2 and max(vals) - min(vals) > 0.05:
+        for pair in pairs:
+            if thresholds[pair] is not None:
+                out[pair]["consistent"] = False
+                out[pair]["reason"] = "estimates diverge across distance pairs"
+
+    return out
