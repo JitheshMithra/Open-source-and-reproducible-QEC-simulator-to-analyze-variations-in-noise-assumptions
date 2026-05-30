@@ -1,6 +1,8 @@
 # QECops v2 — Reproducibility Guide
 
-All results in the paper are reproducible using QECops v2.0.
+All results in the paper: (link added soon)
+
+are reproducible using QECops v2.0.
 Repository: https://github.com/JitheshMithra/QECops
 
 ## Setup
