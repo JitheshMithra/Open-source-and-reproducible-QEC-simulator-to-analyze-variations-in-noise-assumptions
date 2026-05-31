@@ -95,4 +95,50 @@ plt.savefig(outdir / "fig3_inversion_p400.png", dpi=300, bbox_inches="tight")
 plt.close()
 print("fig 3 done")
 
+#fig 5:pseudo-threshold vs correlation strength with 95% CI
+#uses confirmed 100k trial threshold estimates
+
+c_vals = [0.1, 0.2, 0.3, 0.4, 0.5]
+#d=3v5 thresholds and CIs
+t35 = [0.4609, 0.4220, 0.3663, 0.3172, 0.2372]
+lo35 = [0.4504, 0.4108, 0.3543, 0.3053, 0.2215]
+hi35 = [0.4690, 0.4325, 0.3764, 0.3273, 0.2543]
+
+#d=5v7 thresholds and CIs
+t57 = [0.4752, 0.4346, 0.4026, 0.3351, 0.2844]
+lo57 = [0.4637, 0.4236, 0.3853, 0.3240, 0.2710]
+hi57 = [0.4864, 0.4495, 0.4133, 0.3488, 0.3013]
+
+# bitflip baseline for reference
+bf35 = 0.4961
+bf57 = 0.5030
+fig, ax = plt.subplots(figsize=(6, 4))
+#d=3v5
+err35_lo = [t - l for t, l in zip(t35, lo35)]
+err35_hi = [h - t for t, h in zip(t35, hi35)]
+ax.errorbar(c_vals, t35, yerr=[err35_lo, err35_hi],
+           fmt="o-", color="#1f77b4", capsize=4, linewidth=1.5,
+           label=r"$d=3$ vs $d=5$")
+#d=5v7
+err57_lo = [t - l for t, l in zip(t57, lo57)]
+err57_hi = [h - t for t, h in zip(t57, hi57)]
+ax.errorbar(c_vals, t57, yerr=[err57_lo, err57_hi],
+           fmt="s--", color="#ff7f0e", capsize=4, linewidth=1.5,
+           label=r"$d=5$ vs $d=7$")
+#bitflip baseline
+ax.axhline(bf35, color="#1f77b4", linestyle=":", linewidth=1,
+          alpha=0.6, label="Bitflip baseline (d=3v5)")
+ax.axhline(bf57, color="#ff7f0e", linestyle=":", linewidth=1,
+          alpha=0.6, label="Bitflip baseline (d=5v7)")
+ax.set_xlabel("Correlation strength $c$")
+ax.set_ylabel(r"Pseudo-threshold $p^*$")
+ax.set_title("Pseudo-threshold vs correlation strength")
+ax.set_xticks(c_vals)
+ax.grid(True, linestyle="--", alpha=0.4)
+ax.legend(fontsize=9)
+plt.tight_layout()
+plt.savefig(outdir / "fig5_threshold_vs_c.png", dpi=300, bbox_inches="tight")
+plt.close()
+print("fig 5 done")
+
 print("\nall figures saved to figures/")
