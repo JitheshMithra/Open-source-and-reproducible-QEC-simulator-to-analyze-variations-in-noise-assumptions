@@ -74,6 +74,33 @@ def run_qecops_vs_qiskit():
             qiskit_l, _ = qiskit_ler(n, p, shots)
             diff = abs(qecops["LER"] - qiskit_l)
             print(f"{p:>6.2f}  {qecops['LER']:>12.6f}  {qiskit_l:>12.6f}  {diff:>12.6f}")
+def run_validation():
+    from QECops.simulation import runtrials
+    distances = [3, 5, 7]
+    pvalues = [0.05, 0.10, 0.15, 0.20, 0.25, 0.30, 0.35, 0.40, 0.45, 0.50]
+    shots = 100000
+
+    print("Qiskit Aer Validation vs Analytical vs QECops")
+    print("=" * 70)
+
+    for n in distances:
+        print(f"\nCode distance d={n}")
+        print(f"{'p':>6}  {'QECops LER':>12}  {'Qiskit LER':>12}  {'Analytical':>12}  {'Max Abs Err':>12}")
+        print("-" * 65)
+
+        for idx, p in enumerate(pvalues):
+            pt_seed = 42 + idx * 99991 + n * 7
+            qecops = runtrials(n=n, trials=shots, seed=pt_seed,
+                              noisetype="bitflip", p=p)
+            qiskit_l, _ = qiskit_ler(n, p, shots)
+            analytical_l = analytical_logical_error(n, p)
+            max_err = max(
+                abs(qecops["LER"] - analytical_l),
+                abs(qiskit_l - analytical_l),
+                abs(qecops["LER"] - qiskit_l)
+            )
+            print(f"{p:>6.2f}  {qecops['LER']:>12.6f}  {qiskit_l:>12.6f}  "
+                  f"{analytical_l:>12.6f}  {max_err:>12.6f}")
 
 if __name__ == "__main__":
     run_validation()
