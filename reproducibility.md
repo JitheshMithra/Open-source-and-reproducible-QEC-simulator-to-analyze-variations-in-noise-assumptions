@@ -1,4 +1,4 @@
-# QECops v2 — Reproducibility Guide
+# QECops v2: Reproducibility Guide
 
 All results in the paper: (link added soon)
 
@@ -57,6 +57,12 @@ After running the correlated noise sweep above, update threshold values in `src/
 ```bash
 cd src
 python analyzeS.py
+```
+
+# Figures used in Paper (Sensitivity, inversion, and correlation sweeps)
+```bash
+cd src
+python figures.py
 ```
 
 ## Qiskit Validation
