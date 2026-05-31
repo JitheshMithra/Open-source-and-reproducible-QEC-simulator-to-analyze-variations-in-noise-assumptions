@@ -13,7 +13,7 @@
 
 
 
-QECops is a lightweight, open-source simulation framework for studying how noise assumptions influence logical error behavior in quantum error correction (QEC). The question it seeks to answer is: _How sensitive are QEC performance conclusions to the choice of noise model assumptions?_
+QECops is a lightweight, open-source Monte Carlo simulation framework for studying how noise assumptions influence logical error behavior in quantum error correction (QEC); Python. The question it seeks to answer is: _How sensitive are QEC performance conclusions to the choice of noise model assumptions?_
 
 This tool simulates how physical noise models translate into logical error rates in repetition codes, compares behavior across four noise models with consistent methodology, and estimates pseudo-thresholds with bootstrap confidence intervals. Everything runs locally from the command line with no institutional access required.
 
@@ -164,7 +164,6 @@ Each run generates a timestamped results directory containing:
 - Surface code support
 - Density Matrices/Quantum State simulation/Superposition states
 - [Qiskit](https://github.com/Qiskit/qiskit)/[Stim](https://github.com/quantumlib/stim) comparison layer for cross-validation
-- Per-p seed control for statistical independence
 - pip installable package
 - Relative Error Subplots
 
