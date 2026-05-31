@@ -59,6 +59,12 @@ cd src
 python analyzeS.py
 ```
 
+# Figures used in Paper (Sensitivity, inversion, and correlation sweeps)
+```bash
+cd src
+python figures.py
+```
+
 ## Qiskit Validation
 
 ```bash
