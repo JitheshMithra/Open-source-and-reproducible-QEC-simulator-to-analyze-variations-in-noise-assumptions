@@ -1,4 +1,4 @@
-# QECops v2 — Reproducibility Guide
+# QECops v2: Reproducibility Guide
 
 All results in the paper: (link added soon)
 
