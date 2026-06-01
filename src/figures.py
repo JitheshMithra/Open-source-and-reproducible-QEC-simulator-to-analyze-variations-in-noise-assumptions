@@ -30,11 +30,12 @@ for d in distances:
     analytical = [analytical_logical_error(d, p) for p in x]
     ax.errorbar(x, y, yerr=err, marker=markers[d], color=colors[d],
                capsize=3, label=f"$d={d}$ MC", linewidth=1.5, markersize=6)
-    ax.plot(x, analytical, linestyle="--", color=colors[d], alpha=0.6)
+    ax.plot(x, analytical, linestyle="--", color=colors[d], alpha=0.6,
+        label=f"$d={d}$ analytical")
 for pair, val in ci_bf.items():
     if val is not None and pair == (3, 5):
         ax.axvspan(val["lower"], val["upper"], alpha=0.1, color="gray",
-                  label="95% CI (d=3v5)")
+                  label=r"95% CI $(d=3,d=5)$")
 ax.set_xlabel("Physical error rate $p$")
 ax.set_ylabel("Logical error rate $P_L$")
 ax.set_title("Bitflip noise validation")
@@ -65,14 +66,19 @@ for ax, c in zip(axes, c_list):
     for pair, val in ci.items():
         if val is not None and pair == (3, 5):
             ax.axvspan(val["lower"], val["upper"], alpha=0.12, color="gray")
-    #annotate crossing for c=0.5 where it's hardest to see
-    if c == 0.5:
-        ax.axvline(crossings[c], color="black", linestyle=":", linewidth=1.2, alpha=0.7)
-        ax.annotate(f"$p^* = {crossings[c]}$",
-                   xy=(crossings[c], 0.35),
-                   xytext=(crossings[c] + 0.07, 0.28),
-                   fontsize=9, color="black",
-                   arrowprops=dict(arrowstyle="->", color="black", lw=1.0))
+#annotate crossing in each correlated-noise panel
+    ann_y = {0.1: 0.43, 0.3: 0.38, 0.5: 0.35}
+    text_y = {0.1: 0.32, 0.3: 0.30, 0.5: 0.28}
+
+    ax.axvline(crossings[c], color="black", linestyle=":", linewidth=1.2, alpha=0.7)
+    ax.annotate(
+        f"$p^* = {crossings[c]}$",
+        xy=(crossings[c], ann_y[c]),
+        xytext=(crossings[c] + 0.04, text_y[c]),
+        fontsize=9,
+        color="black",
+        arrowprops=dict(arrowstyle="->", color="black", lw=1.0),
+    )
     ax.set_title(f"$c = {c}$")
     ax.set_xlabel("Physical error rate $p$")
     ax.grid(True, linestyle="--", alpha=0.4)
@@ -100,9 +106,9 @@ ax.errorbar(c_vals, t35, yerr=err35, fmt="o-", color="#1f77b4",
 ax.errorbar(c_vals, t57, yerr=err57, fmt="s--", color="#ff7f0e",
            capsize=4, linewidth=2.0, markersize=7, label=r"$d=5$ vs $d=7$")
 ax.axhline(bf35, color="#1f77b4", linestyle=":", linewidth=1.2,
-          alpha=0.5, label="Bitflip baseline (d=3v5)")
+          alpha=0.5, label=r"Bitflip baseline $(d=3,d=5)$")
 ax.axhline(bf57, color="#ff7f0e", linestyle=":", linewidth=1.2,
-          alpha=0.5, label="Bitflip baseline (d=5v7)")
+          alpha=0.5, label=r"Bitflip baseline $(d=5,d=7)$")
 ax.set_xlabel("Correlation strength $c$")
 ax.set_ylabel(r"Pseudo-threshold $p^*$")
 ax.set_title("Pseudo-threshold vs correlation strength")
