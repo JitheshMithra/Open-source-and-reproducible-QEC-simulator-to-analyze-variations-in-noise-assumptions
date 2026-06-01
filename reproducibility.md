@@ -54,6 +54,8 @@ python -m QECops.plot --n 3 5 7 --trials 100000 --seed 42 --pmin 0.05 --pmax 0.5
 
 After running the correlated noise sweep above, update threshold values in `src/analyzeS.py` and run:
 
+Update the threshold values at the top of analyzeS.py with the values from your correlated noise sweep outputs.
+
 ```bash
 cd src
 python analyzeS.py
@@ -72,7 +74,7 @@ cd src
 python validation.py
 ```
 
-Validates QECops Monte Carlo against Qiskit Aer simulation and analytical bitflip prediction across d=3,5,7 and p=0.05 to 0.50. Maximum absolute error between QECops and Qiskit is 0.003, within statistical uncertainty for N=100,000 trials.
+Validates QECops Monte Carlo against Qiskit Aer simulation and analytical bitflip prediction across d=3,5,7 and p=0.05 to 0.50. Maximum absolute difference between QECops and Qiskit Aer is 0.0051, observed at d=3, p=0.30, within statistical variability for N=100,000 trials.
 
 ## Parameter Summary
 
