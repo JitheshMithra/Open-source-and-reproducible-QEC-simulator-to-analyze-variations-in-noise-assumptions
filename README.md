@@ -49,9 +49,9 @@ src/
     simulation.py
     plot.py
     analytical.py
-   analyzeS.py
-   validation.py
-   figures.py
+  analyzeS.py
+  validation.py
+  figures.py
 REPORTS/
   EXPERIMENTS.md
   reportlinks.md
