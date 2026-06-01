@@ -87,7 +87,7 @@ Install required dependencies:
 pip install -r requirements.txt
 ```
 ### Running the simulation:
-All simulations are executed from the src directory. Paper-quality results use 100k trials
+All simulations are executed from the src directory. Paper-quality results use 100k trials.
 ```bash
 cd src
 ```
