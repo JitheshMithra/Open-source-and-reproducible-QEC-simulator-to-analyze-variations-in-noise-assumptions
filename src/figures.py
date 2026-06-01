@@ -1,6 +1,6 @@
-#plot_figures.py
+#figures.py
 #run from src/
-#python plot_figures.py
+#python figures.py
 
 import numpy as np
 import matplotlib.pyplot as plt
