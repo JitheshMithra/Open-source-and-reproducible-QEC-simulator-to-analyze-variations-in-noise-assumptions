@@ -31,6 +31,7 @@ This tool simulates how physical noise models translate into logical error rates
 Most QEC tools need instituitional access or require complex environments and setup. This tool runs locally from the command line and has no other dependencies, being fully reproducible with fixed seed.
 
 ### Noise Models:
+Paper-quality results use 100k trials
 **Bitflip**: independent per-qubit X errors at rate p. Analytical solution exists via binomial distribution. Used as baseline.
 
 **Depolarizing**: symmetric X/Y/Z errors. Effective flip probability is 2p/3, accounting for the three error channels. Threshold is suppressed relative to bitflip.
@@ -49,12 +50,16 @@ src/
     simulation.py
     plot.py
     analytical.py
+   analyzeS.py
+   validation.py
+   figures.py
 REPORTS/
   EXPERIMENTS.md
   reportlinks.md
 requirements.txt
 README.md
 LICENSE
+reproducibility.md
 .gitignore
 ```
 ## Technical Reports:
@@ -64,7 +69,9 @@ Simulation results show strong agreement with analytical predictions across code
 
 **DOI**: [https://doi.org/10.5281/zenodo.19410366](https://doi.org/10.5281/zenodo.19410366)
 
-**See /REPORTS for executed experiments and more on the stored technical reports related to this project and its methodology**
+### Paper
+A companion paper describing the v2 methodology and results is in preparation. All results in the paper are reproducible using the commands in `reproducibility.md`.
+**DOI:** (once confirmed)
 
 ## Getting Started:
 ### Installation:
@@ -154,7 +161,6 @@ Each run generates a timestamped results directory containing:
 - Repetition code only: no surface codes or other stabilizer codes
 - Majority vote decoding only: no minimum weight perfect matching
 - Classical simulation: no quantum state representation
-- Shared seed across p sweep: not independent per data point
 - No hardware integration
 
 ## Future Work
