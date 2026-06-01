@@ -71,6 +71,7 @@ Simulation results show strong agreement with analytical predictions across code
 
 ### Paper
 A companion paper describing the v2 methodology and results is in preparation. All results in the paper are reproducible using the commands in `reproducibility.md`.
+
 **DOI:** (once confirmed)
 
 ## Getting Started:
