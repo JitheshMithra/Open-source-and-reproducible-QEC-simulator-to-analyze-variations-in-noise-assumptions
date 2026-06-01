@@ -174,7 +174,7 @@ Each run generates a timestamped results directory containing:
 - Relative Error Subplots
 
 ### Acknowledgements:
-- Special thanks to _Dr. Haining Pan_, University of Florida, for discussion about possible directions and feedback on assumptions. Collaboration on v2 paper.
+- Special thanks to _Dr. Haining Pan_, University of Florida, for discussion about possible directions and feedback on assumptions. Collaborator on v2 paper.
 - Special thanks to _Daniel Strano_, developer of [qrack](https://github.com/unitaryfoundation/qrack), from the Unitary Foundation for external review and consistent feedback and mentoring on my methodology
 - Special thanks to _Dr. Zebo Yang_, Florida Atlantic University, for external review and feedback
 
