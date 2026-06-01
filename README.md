@@ -63,7 +63,7 @@ reproducibility.md
 .gitignore
 ```
 ## Technical Reports:
-A detailed explanation of the methodology, experiments, and results is available in the REPORTS folder.
+A detailed explanation of the v1 methodology, experiments, and results is available in the REPORTS folder.
 
 Simulation results show strong agreement with analytical predictions across code distances n=3 to n=11.
 
