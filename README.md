@@ -31,7 +31,6 @@ This tool simulates how physical noise models translate into logical error rates
 Most QEC tools need instituitional access or require complex environments and setup. This tool runs locally from the command line and has no other dependencies, being fully reproducible with fixed seed.
 
 ### Noise Models:
-Paper-quality results use 100k trials
 **Bitflip**: independent per-qubit X errors at rate p. Analytical solution exists via binomial distribution. Used as baseline.
 
 **Depolarizing**: symmetric X/Y/Z errors. Effective flip probability is 2p/3, accounting for the three error channels. Threshold is suppressed relative to bitflip.
@@ -88,7 +87,7 @@ Install required dependencies:
 pip install -r requirements.txt
 ```
 ### Running the simulation:
-All simulations are executed from the src directory
+All simulations are executed from the src directory. Paper-quality results use 100k trials
 ```bash
 cd src
 ```
