@@ -306,16 +306,15 @@ def crossingconsistency(thresholds, ci=None):
             continue
         out[pair] = {"consistent": True, "reason": "crossing found with CI" if ci else "crossing found"}
 
-    #flag if pair estimates diverge beyond combined bootstrap uncertainty
     vals = [(p, thresholds[p]) for p in pairs if thresholds[p] is not None]
     if len(vals) >= 2:
         for idx in range(len(vals) - 1):
             p1, t1 = vals[idx]
             p2, t2 = vals[idx+1]
             if ci and ci.get(p1) and ci.get(p2):
-                combined_uncertainty = ci[p1]["std"] + ci[p2]["std"]
+                combined_uncertainty = 1.96 * np.sqrt(ci[p1]["std"]**2 + ci[p2]["std"]**2)
             else:
-                combined_uncertainty = 0.05  # fallback if no CI
+                combined_uncertainty = 0.05
             if abs(t1 - t2) > combined_uncertainty:
                 out[p1]["consistent"] = False
                 out[p1]["reason"] = "estimates diverge beyond combined bootstrap uncertainty"
