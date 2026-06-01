@@ -313,7 +313,7 @@ def crossingconsistency(thresholds, ci=None):
             p1, t1 = vals[idx]
             p2, t2 = vals[idx+1]
             if ci and ci.get(p1) and ci.get(p2):
-                combined_uncertainty = ci[p1]["std"] + ci[p2]["std"]
+                1.96 * np.sqrt(ci[p1]["std"]**2 + ci[p2]["std"]**2)
             else:
                 combined_uncertainty = 0.05  # fallback if no CI
             if abs(t1 - t2) > combined_uncertainty:
