@@ -69,11 +69,6 @@ Simulation results show strong agreement with analytical predictions across code
 
 **DOI**: [https://doi.org/10.5281/zenodo.19410366](https://doi.org/10.5281/zenodo.19410366)
 
-### Paper
-A companion paper describing the v2 methodology and results is in preparation. All results in the paper are reproducible using the commands in `reproducibility.md`.
-
-**DOI:** (once confirmed)
-
 ## Getting Started:
 ### Installation:
 Make sure to download/update latest versions of pip, python, git, and related packages prior to running this simulation for best/optimal results. Once complete, proceed with installation instructions.
