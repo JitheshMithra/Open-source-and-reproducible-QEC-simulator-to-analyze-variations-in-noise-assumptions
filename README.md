@@ -1,4 +1,4 @@
-**Current Version:** v2
+**Current Version:** v2.1
 
 **Status:** Comparative noise sensitivity analysis framework with bootstrap threshold estimation (ACTIVE)
 
