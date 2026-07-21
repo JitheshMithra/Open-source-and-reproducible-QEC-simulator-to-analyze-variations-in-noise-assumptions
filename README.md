@@ -67,7 +67,7 @@ A detailed explanation of the v1 methodology, experiments, and results is availa
 
 Simulation results show strong agreement with analytical predictions across code distances n=3 to n=11.
 
-**DOI**: [https://doi.org/10.5281/zenodo.19410366](https://doi.org/10.5281/zenodo.19410366)
+**DOI**: [https://doi.org/10.5281/zenodo.19410365](https://doi.org/10.5281/zenodo.19410365) 
 
 ## Getting Started:
 ### Installation:
