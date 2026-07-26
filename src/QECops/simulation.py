@@ -224,6 +224,4 @@ def crossingConsistency(thresholds, ci=None):
                 out[p1]["reason"] = "estimates diverge beyond combined bootstrap uncertainty"
                 out[p2]["consistent"] = False
                 out[p2]["reason"] = "estimates diverge beyond combined bootstrap uncertainty"
-    if ci and ci.get(p1) and ci.get(p2):
-        combinedUncertainty = 1.96 * np.sqrt(ci[p1]["std"]**2 + ci[p2]["std"]**2)
     return out
