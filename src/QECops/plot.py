@@ -7,11 +7,11 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 import plotly.graph_objects as go
 
-from .analytical import analytical_logical_error
-from .simulation import distancesweep, estimatepseudothreshold, bootstrapthreshold, thresholdscalingsummary, robustnessmetric, failureboundary, crossingconsistency
+from .analytical import analyticalLogicalError
+from .simulation import distanceSweep, estimatePseudoThreshold, bootstrapThreshold, thresholdScalingSummary, robustnessMetric, failureBoundary, crossingConsistency
 
 
-def argparser():
+def argParser():
     parser = argparse.ArgumentParser(description="QECops experiment runner")
 
     parser.add_argument("--n", nargs="+", type=int, required=True)
@@ -46,29 +46,29 @@ def argparser():
     return parser.parse_args()
 
 
-def pvaluesgen(pmin, pmax, pstep):
+def pValuesGen(pmin, pmax, pstep):
     if pstep <= 0:
         raise ValueError("pstep must be positive")
     if pmin < 0 or pmax > 1 or pmin > pmax:
         raise ValueError("pmin and pmax must be between 0 and 1, with pmin <= pmax")
 
-    pvalues = []
+    pValues = []
     p = pmin
     while p <= pmax + 1e-12:
-        pvalues.append(round(p, 12))
+        pValues.append(round(p, 12))
         p += pstep
-    return pvalues
+    return pValues
 
 
-def validate_distances(nvalues):
-    for n in nvalues:
+def validateDistances(nValues):
+    for n in nValues:
         if n <= 0:
             raise ValueError("n values must be positive")
         if n % 2 == 0:
             raise ValueError("n values must be odd")
 
 
-def validate_args(args):
+def validateArgs(args):
     if args.mode == "circuit":
         raise NotImplementedError("Circuit-level noise is not implemented yet.")
 
@@ -87,10 +87,10 @@ def validate_args(args):
     if args.noise == "correlated" and args.sweepparam not in ["p", "correlation"]:
         raise ValueError("For correlated noise, use --sweepparam p or --sweepparam correlation.")
 
-    validate_distances(args.n)
+    validateDistances(args.n)
 
 
-def build_noise_params(args):
+def buildNoiseParams(args):
     if args.noise == "biased":
         return {"px": args.px, "pz": args.pz}
 
@@ -102,7 +102,7 @@ def build_noise_params(args):
     return {}
 
 
-def print_readable_summary(results, thresholds, ci, summary, args):
+def printReadableSummary(results, thresholds, ci, summary, args):
     print("\nQECops Simulation Summary")
     print("--------------------------")
 
@@ -146,7 +146,7 @@ def print_readable_summary(results, thresholds, ci, summary, args):
         print(f"p={row['physical_error_rate']:.3f}: {status}")
 
 
-def export_results(resultsdir, results, thresholds, ci, summary, export_type, args):
+def exportResults(resultsDir, results, thresholds, ci, summary, exportType, args):
     rows = []
 
     for d, curve in sorted(results.items()):
@@ -163,8 +163,8 @@ def export_results(resultsdir, results, thresholds, ci, summary, export_type, ar
                 "noise_type": r["noise_type"],
             })
 
-    if export_type in ["txt", "all"]:
-        with open(resultsdir / "summary.txt", "w") as f:
+    if exportType in ["txt", "all"]:
+        with open(resultsDir / "summary.txt", "w") as f:
             f.write("QECops Simulation Summary\n")
             f.write("--------------------------\n\n")
 
@@ -202,24 +202,24 @@ def export_results(resultsdir, results, thresholds, ci, summary, export_type, ar
                     else:
                         f.write(f"d={pair[0]} vs d={pair[1]}: {val['mean']:.4f} [{val['lower']:.4f}, {val['upper']:.4f}]\n")
 
-    if export_type in ["csv", "all"]:
-        with open(resultsdir / "raw_results.csv", "w", newline="") as f:
+    if exportType in ["csv", "all"]:
+        with open(resultsDir / "raw_results.csv", "w", newline="") as f:
             writer = csv.DictWriter(f, fieldnames=rows[0].keys())
             writer.writeheader()
             writer.writerows(rows)
 
-    if export_type in ["json", "all"]:
-        ci_serializable = {}
+    if exportType in ["json", "all"]:
+        ciSerializable = {}
         if ci:
             for k, v in ci.items():
-                ci_serializable[str(k)] = v
+                ciSerializable[str(k)] = v
 
-        with open(resultsdir / "raw_results.json", "w") as f:
+        with open(resultsDir / "raw_results.json", "w") as f:
             json.dump(
                 {
                     "results": rows,
                     "thresholds": {str(k): v for k, v in thresholds.items()},
-                    "confidence_intervals": ci_serializable,
+                    "confidence_intervals": ciSerializable,
                     "scaling_summary": summary,
                 },
                 f,
@@ -227,7 +227,7 @@ def export_results(resultsdir, results, thresholds, ci, summary, export_type, ar
             )
 
 
-def make_threshold_plot(resultsdir, results, thresholds, ci, args):
+def makeThresholdPlot(resultsDir, results, thresholds, ci, args):
     fig, ax = plt.subplots(figsize=(8, 6))
 
     for d, curve in sorted(results.items()):
@@ -257,11 +257,11 @@ def make_threshold_plot(resultsdir, results, thresholds, ci, args):
         ax.set_yscale("log")
 
     plt.tight_layout()
-    plt.savefig(resultsdir / "threshold_plot.png", dpi=300, bbox_inches="tight")
+    plt.savefig(resultsDir / "threshold_plot.png", dpi=300, bbox_inches="tight")
     plt.close()
 
 
-def make_validation_plot(resultsdir, results, args):
+def makeValidationPlot(resultsDir, results, args):
     if args.noise not in ["bitflip", "depolarizing"]:
         raise ValueError("Validation plot only supports bitflip/depolarizing.")
 
@@ -269,19 +269,19 @@ def make_validation_plot(resultsdir, results, args):
 
     for d, curve in sorted(results.items()):
         x = [r["sweep_value"] for r in curve]
-        ysim_raw = [r["LER"] for r in curve]
-        ysim_plot = [max(r["LER"], 1 / r["trials"]) for r in curve]
+        ysimRaw = [r["LER"] for r in curve]
+        ysimPlot = [max(r["LER"], 1 / r["trials"]) for r in curve]
         err = [max(r["stderr"], 1 / r["trials"]) for r in curve]
 
-        yanalytic = [analytical_logical_error(d, p) for p in x]
-        yabs_error = [
+        yanalytic = [analyticalLogicalError(d, p) for p in x]
+        yabsError = [
             max(abs(s - a), 1 / curve[0]["trials"])
-            for s, a in zip(ysim_raw, yanalytic)
+            for s, a in zip(ysimRaw, yanalytic)
         ]
 
-        ax1.errorbar(x, ysim_plot, yerr=err, marker="o", capsize=3, label=f"d={d} Monte Carlo")
+        ax1.errorbar(x, ysimPlot, yerr=err, marker="o", capsize=3, label=f"d={d} Monte Carlo")
         ax1.plot(x, yanalytic, linestyle="--", label=f"d={d} Analytical")
-        ax2.plot(x, yabs_error, marker="x", label=f"d={d}")
+        ax2.plot(x, yabsError, marker="x", label=f"d={d}")
 
     ax1.set_ylabel("Logical error rate")
     ax1.set_title(f"Validation plot, noise={args.noise}")
@@ -298,11 +298,11 @@ def make_validation_plot(resultsdir, results, args):
         ax1.set_yscale("log")
 
     plt.tight_layout()
-    plt.savefig(resultsdir / "validation_plot.png", dpi=300, bbox_inches="tight")
+    plt.savefig(resultsDir / "validation_plot.png", dpi=300, bbox_inches="tight")
     plt.close()
 
 
-def make_interactive_plot(resultsdir, results, args):
+def makeInteractivePlot(resultsDir, results, args):
     fig = go.Figure()
 
     for d, curve in sorted(results.items()):
@@ -321,32 +321,32 @@ def make_interactive_plot(resultsdir, results, args):
     if args.logscale:
         fig.update_yaxes(type="log")
 
-    fig.write_html(resultsdir / "interactive_plot.html")
+    fig.write_html(resultsDir / "interactive_plot.html")
 
 
-def plotrun(args):
-    validate_args(args)
+def plotRun(args):
+    validateArgs(args)
 
-    pvalues = pvaluesgen(args.pmin, args.pmax, args.pstep)
+    pValues = pValuesGen(args.pmin, args.pmax, args.pstep)
 
-    run_id = datetime.now().strftime("%Y%m%d_%H%M%S_%f")
-    resultsdir = Path.cwd() / "results" / run_id
-    resultsdir.mkdir(parents=True, exist_ok=True)
+    runId = datetime.now().strftime("%Y%m%d_%H%M%S_%f")
+    resultsDir = Path.cwd() / "results" / runId
+    resultsDir.mkdir(parents=True, exist_ok=True)
 
-    noise_params = build_noise_params(args)
+    noiseParams = buildNoiseParams(args)
 
-    results = distancesweep(
+    results = distanceSweep(
         distances=args.n,
-        pvalues=pvalues,
+        pValues=pValues,
         trials=args.trials,
         seed=args.seed,
-        logicalbit=args.logicalbit,
-        noisetype=args.noise,
-        sweepparam=args.sweepparam,
-        **noise_params,
+        logicalBit=args.logicalbit,
+        noiseType=args.noise,
+        sweepParam=args.sweepparam,
+        **noiseParams,
     )
 
-    thresholds = estimatepseudothreshold(results)
+    thresholds = estimatePseudoThreshold(results)
 
     if args.sweepparam != "p":
         print("Warning: pseudo-thresholds are only standard when sweeping p.")
@@ -354,21 +354,21 @@ def plotrun(args):
 
     ci = None
     if args.bootstrap and thresholds:
-        ci = bootstrapthreshold(results, nbootstrap=args.nbootstrap, confidence=args.confidence)
+        ci = bootstrapThreshold(results, nBootstrap=args.nbootstrap, confidence=args.confidence)
 
-    summary = thresholdscalingsummary(results)
+    summary = thresholdScalingSummary(results)
 
-    print_readable_summary(results, thresholds, ci, summary, args)
-    export_results(resultsdir, results, thresholds, ci, summary, args.export, args)
+    printReadableSummary(results, thresholds, ci, summary, args)
+    exportResults(resultsDir, results, thresholds, ci, summary, args.export, args)
 
     if args.plotmode == "validation":
-        make_validation_plot(resultsdir, results, args)
+        makeValidationPlot(resultsDir, results, args)
     else:
-        make_threshold_plot(resultsdir, results, thresholds, ci, args)
+        makeThresholdPlot(resultsDir, results, thresholds, ci, args)
 
-    make_interactive_plot(resultsdir, results, args)
-    boundary = failureboundary(summary)
-    consistency = crossingconsistency(thresholds, ci)
+    makeInteractivePlot(resultsDir, results, args)
+    boundary = failureBoundary(summary)
+    consistency = crossingConsistency(thresholds, ci)
     if boundary is not None:
         print(f"\nFailure boundary detected at p = {boundary:.3f}")
     else:
@@ -380,11 +380,11 @@ def plotrun(args):
         status = "consistent" if result["consistent"] else "inconsistent"
         print(f"d={pair[0]} vs d={pair[1]}: {status} ({result['reason']})")
     print("\nSaved files:")
-    print(resultsdir)
+    print(resultsDir)
 
 def main():
-    args = argparser()
-    plotrun(args)
+    args = argParser()
+    plotRun(args)
 
 
 if __name__ == "__main__":
