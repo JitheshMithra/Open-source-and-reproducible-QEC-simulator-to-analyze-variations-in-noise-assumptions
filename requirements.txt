@@ -1,2 +1,5 @@
 matplotlib
 plotly
+numpy
+qiskit
+qiskit-aer
