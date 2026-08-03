@@ -6,7 +6,8 @@
 ![Python](https://img.shields.io/badge/Python-3.10-blue) 
 ![Qiskit](https://img.shields.io/badge/Qiskit-Aer-6929C4)
 ![Field](https://img.shields.io/badge/Field-quant--ph-purple) 
-[![Featured in The Quantum Insider](https://img.shields.io/badge/Featured-The%20Quantum%20Insider-6929C4)](https://thequantuminsider.com/2026/07/22/guest-post-what-a-high-school-student-found-when-he-stress-tested-a-quantum-benchmark/)
+
+Featured in [The Quantum Insider](https://thequantuminsider.com/2026/07/22/guest-post-what-a-high-school-student-found-when-he-stress-tested-a-quantum-benchmark/): "What a High School Student Found When He Stress-Tested a Quantum Benchmark"
 
 <p align="center">
    <img width="734" height="236" alt="image" src="https://github.com/user-attachments/assets/50658cb1-b35d-450b-af73-4a9f9f6be833" />
