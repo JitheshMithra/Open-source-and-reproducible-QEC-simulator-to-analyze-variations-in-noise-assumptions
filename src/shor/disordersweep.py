@@ -1,8 +1,8 @@
 #Disorder comparison sweep: does spatially inhomogeneous noise change the Shor code's logical error rate relative to uniform noise at the same mean p? Same bootstrap CI methodology as thresholdsweep.py, but here the x-axis is disorderStrength at fixed p, run at a few representative p values by default (0.10, 0.15, 0.20, 0.25). N=2000/point since we're now running 3x as many points as thresholdsweep.py for a similar wall-clock budget.
 
-# run from src/shor/
-# python disordersweep.py
-# python disordersweep.py --trials 4000 --realizations 40 --p 0.10 0.20 0.30 --delta 0.0 0.10 0.20
+#run from src/shor/
+#python disordersweep.py
+#python disordersweep.py --trials 4000 --realizations 40 --p 0.10 0.20 0.30 --delta 0.0 0.10 0.20
 
 import argparse
 import json
@@ -62,6 +62,7 @@ def runSweep(pValues, disorderStrengths, nTrials, nRealizations, baseSeed, outPa
                 "ler": ler,
                 "seed": seed,
                 "wall_time_s": round(t1 - t0, 1),
+                "per_realization_ler": perReal,
             })
             print(f"p={p:.2f} delta={delta:.2f}  LER={ler:.4f}  ({failures}/{nTrials})  [{t1-t0:.1f}s]")
 
