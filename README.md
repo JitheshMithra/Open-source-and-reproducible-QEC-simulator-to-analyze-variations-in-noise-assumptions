@@ -4,7 +4,7 @@
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.19410365.svg)](https://doi.org/10.5281/zenodo.19410365) ![License](https://img.shields.io/badge/License-MIT-green) 
 ![Python](https://img.shields.io/badge/Python-3.10-blue) 
-![Qiskit](https://img.shields.io/badge/Qiskit-Aer-6929C4)
+[![Qiskit](https://img.shields.io/badge/Qiskit-Aer-6929C4)](https://qiskit.github.io/qiskit-aer/)
 ![Field](https://img.shields.io/badge/Field-quant--ph-purple) 
 
 [![Featured in The Quantum Insider](https://img.shields.io/badge/Featured-The%20Quantum%20Insider-00CED1)](https://thequantuminsider.com/2026/07/22/guest-post-what-a-high-school-student-found-when-he-stress-tested-a-quantum-benchmark/)
