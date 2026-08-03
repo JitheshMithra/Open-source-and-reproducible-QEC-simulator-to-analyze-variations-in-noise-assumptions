@@ -13,20 +13,23 @@
 
 
 
-QECops is a lightweight, open-source Monte Carlo simulation framework for studying how noise assumptions influence logical error behavior in quantum error correction (QEC); Python. The question it seeks to answer is: _How sensitive are QEC performance conclusions to the choice of noise model assumptions?_
+QECops is a lightweight, open-source Monte Carlo simulation framework for studying how noise assumptions influence logical error behavior in quantum error correction (QEC); Python. The question it seeks to answer is: How sensitive are QEC performance conclusions to the choice of noise model assumptions?
 
-This tool simulates how physical noise models translate into logical error rates in repetition codes, compares behavior across four noise models with consistent methodology, and estimates pseudo-thresholds with bootstrap confidence intervals. Everything runs locally from the command line with no institutional access required.
+This tool simulates how physical noise models translate into logical error rates in repetition codes, compares behavior across four noise models with consistent methodology, and estimates pseudo-thresholds with bootstrap confidence intervals. It has since been extended to the Shor [[9,1,3]] code, simulating logical error rates under both uniform and spatially disordered noise with the same bootstrap methodology. Everything runs locally from the command line with no institutional access required.
 
 ### What it does
-   - Simulates repetition codes of distance d=3, 5, 7 (and beyond) under four noise models
-   - Decodes using majority-vote
-   - Sweeps physical error rate p (or other noise parameters) across a configurable range
-   - Estimates logical error rate (LER) with Monte Carlo simulation
-   - Computes exact analytical baseline using the binomial distribution for bitflip noise
-   - Estimates pseudo-thresholds by finding where LER curves for adjacent distances cross
-   - Computes bootstrap confidence intervals on threshold estimates
-   - Exports results as PNG plots, interactive HTML, CSV, and JSON
-   - Validates simulation against analytical predictions with absolute error subplots
+**Repetition code:**
+- Simulates code distances d=3, 5, 7 (and beyond) under four noise models: bitflip, depolarizing, biased, correlated
+- Majority-vote decoding
+- Sweeps physical error rate (or other noise parameters) across a configurable range
+- Estimates logical error rate via Monte Carlo, validated against the exact analytical binomial baseline for bitflip noise
+- Estimates pseudo-thresholds by finding where LER curves for adjacent distances cross, with bootstrap confidence intervals
+- Exports PNG plots, interactive HTML, CSV, and JSON
+
+**Shor [[9,1,3]] code:**
+- Full Qiskit implementation: encoding, physical ancilla-based syndrome measurement, and correction, verified against exact analytical results
+- Monte Carlo logical error rate estimation under uniform noise and under spatially inhomogeneous (disordered) noise, where each qubit independently draws its own error rate
+- Threshold sweep and disorder-strength comparison, both with bootstrap confidence intervals
 
 Most QEC tools need instituitional access or require complex environments and setup. This tool runs locally from the command line and has no other dependencies, being fully reproducible with fixed seed.
 
