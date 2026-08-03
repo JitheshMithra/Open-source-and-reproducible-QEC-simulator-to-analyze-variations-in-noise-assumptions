@@ -84,9 +84,7 @@ reproducibility.md
 .gitignore
 ```
 ## Technical Reports:
-A detailed explanation of the v1 methodology, experiments, and results is available in the REPORTS folder.
-
-Simulation results show strong agreement with analytical predictions across code distances n=3 to n=11.
+A detailed explanation of the v1/v2 methodology, experiments, and results is available in the REPORTS folder.
 
 **DOI**: [https://doi.org/10.5281/zenodo.19410365](https://doi.org/10.5281/zenodo.19410365) 
 
@@ -207,7 +205,7 @@ python disordersweep.py --trials 4000 --realizations 40 --p 0.10 0.20 0.30 --del
 - Repetition code: majority-vote decoding only, no surface codes or other stabilizer codes, classical simulation with no quantum state representation
 - Shor code: single fixed code distance (no natural second distance for a pseudo-threshold crossing); disorder model is a simple i.i.d. per-qubit uniform draw, not spatially correlated disorder; lower Monte Carlo trial counts (~3000-4000 vs. 10000+) due to per-trial circuit simulation cost
 - No hardware integration
-- 
+
 ## Future Work
 - Circuit-level noise modeling
 - Cyclic QEC with multiple syndrome rounds
