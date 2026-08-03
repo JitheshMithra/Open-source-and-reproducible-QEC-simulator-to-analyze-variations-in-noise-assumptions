@@ -4,8 +4,8 @@
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.19410365.svg)](https://doi.org/10.5281/zenodo.19410365) ![License](https://img.shields.io/badge/License-MIT-green) 
 ![Python](https://img.shields.io/badge/Python-3.10-blue) 
-![Field](https://img.shields.io/badge/Field-quant--ph-purple) 
 ![Qiskit](https://img.shields.io/badge/Qiskit-Aer-6929C4)
+![Field](https://img.shields.io/badge/Field-quant--ph-purple) 
 
 <p align="center">
    <img width="734" height="236" alt="image" src="https://github.com/user-attachments/assets/50658cb1-b35d-450b-af73-4a9f9f6be833" />
