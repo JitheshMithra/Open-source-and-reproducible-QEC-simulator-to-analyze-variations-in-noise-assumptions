@@ -1,10 +1,11 @@
-**Current Version:** v2.1
+**Current Version:** v2.5
 
-**Status:** Comparative noise sensitivity analysis framework with bootstrap threshold estimation (ACTIVE)
+**Status:** Shor [[9,1,3]] code robustness to spatially inhomogeneous noise disorder & repetition-code noise sensitivity analysis with bootstrap threshold estimation
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.19410365.svg)](https://doi.org/10.5281/zenodo.19410365) ![License](https://img.shields.io/badge/License-MIT-green) 
 ![Python](https://img.shields.io/badge/Python-3.10-blue) 
 ![Field](https://img.shields.io/badge/Field-quant--ph-purple) 
+![Qiskit](https://img.shields.io/badge/Qiskit-Aer-6929C4)
 
 <p align="center">
    <img width="734" height="236" alt="image" src="https://github.com/user-attachments/assets/50658cb1-b35d-450b-af73-4a9f9f6be833" />
@@ -48,9 +49,25 @@ src/
     simulation.py
     plot.py
     analytical.py
+  shor/
+    shorcode.py
+    verifyshor.py
+    correctshor.py
+    crosschecksyndrome.py
+    montecarloShor.py
+    montecarloShorinhomogeneous.py
+    thresholdsweep.py
+    disordersweep.py
+    bootstrapdiff.py
+    figuresdisorder.py
+    figures/
+    disorder_sweep_results.json
+    disorder_bootstrap_diff_results.json
   analyzeS.py
   validation.py
   figures.py
+  figures/
+  results/
 REPORTS/
   EXPERIMENTS.md
   reportlinks.md
