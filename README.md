@@ -1,6 +1,6 @@
 **Current Version:** v2.5
 
-**Status:** Comparative noise sensitivity analysis framework with bootstrap threshold estimation, extended to genuinely quantum codes (ACTIVE)
+**Status:** Comparative noise sensitivity analysis framework with bootstrap threshold estimation, extended to real quantum codes (ACTIVE)
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.19410365.svg)](https://doi.org/10.5281/zenodo.19410365) [![License](https://img.shields.io/badge/License-MIT-green)](https://github.com/JitheshMithra/QECops/blob/main/LICENSE)
 [![Python](https://img.shields.io/badge/Python-3.10-blue)](https://www.python.org/)
