@@ -1,9 +1,4 @@
-#Bootstrap-of-difference test for the disorder sweep: is LER(delta) - LER(0) at fixed p distinguishable from zero,
-#once we resample at the realization level (the actual unit of replication) instead of pretending all N trials are iid?
-#The 20 disorder realizations at each (p, delta) point are drawn from an independently seeded RNG stream per point
-#(see disordersweep.py: seed = baseSeed + idx*99991, reseeded per (p,delta) call) -- there is no shared/matched
-#realization structure between a delta>0 point and its delta=0 baseline at the same p, so this is an unpaired
-#two-sample bootstrap: resample each group's 20 per-realization LERs independently, with replacement.
+#Bootstrap-of-difference test for the disorder sweep: is LER(delta) - LER(0) at fixed p distinguishable from zero once we resample at the realization level instead of pretending all N trials are iid? Each (p, delta) point's 20 realizations come from an independently seeded RNG stream (disordersweep.py: seed = baseSeed + idx*99991), so there's no shared realization structure to pair against the delta=0 baseline, making this an unpaired two-sample bootstrap over each group's 20 per-realization LERs.
 
 import argparse
 import json
