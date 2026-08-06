@@ -28,15 +28,12 @@ def fzSq(p, n):
 
 
 def squareFamilyOld(p, m):
-    #the already-tested squareFamilyCheck formula (concatenation_recursion.py), reproduced here
-    #for direct side-by-side comparison. Single-level parity, no inner majority stage.
+    #the already-tested squareFamilyCheck formula (concatenation_recursion.py), reproduced here for direct side-by-side comparison. Single-level parity, no inner majority stage.
     return parityN(m, p)
 
 
 def consistencyCheckAtN3():
-    #At n=3, "grow both together" must reduce exactly to the already brute-force-validated base
-    #Shor-block formulas (rigorous_model_check.py / rectangular_family_check_v2.py's nOuter=3
-    #case), since nInner=nOuter=3 is the base 9-qubit block. This is a free, exact analytic check.
+    #At n=3, "grow both together" must reduce exactly to the already brute-force-validated base Shor-block formulas (rigorous_model_check.py / rectangular_family_check_v2.py's nOuter=3 case), since nInner=nOuter=3 is the base 9-qubit block. This is a free, exact analytic check.
     print("Consistency check: fxSq/fzSq at n=3 must equal the base Shor-block formulas")
     for p in (0.1, 0.3, 0.45, 0.5):
         fxSqVal, fzSqVal = fxSq(p, 3), fzSq(p, 3)

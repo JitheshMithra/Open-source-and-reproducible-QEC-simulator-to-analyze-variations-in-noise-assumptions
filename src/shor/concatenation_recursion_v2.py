@@ -53,9 +53,7 @@ def parity3Mp(p):
 
 
 def deterministicTraceMpmath(p0, levels, dps=80):
-    #Arbitrary-precision (mpmath) deterministic, non-disordered trace of pX_k, pZ_k, total_k,
-    #to show the recursion stays well-defined (finite, non-NaN) far beyond where a plain
-    #float64 toy-model recursion would underflow to exactly 0.0.
+    #Arbitrary-precision (mpmath) deterministic, non-disordered trace of pX_k, pZ_k, total_k, to show the recursion stays well-defined (finite, non-NaN) far beyond where a plain float64 toy-model recursion would underflow to exactly 0.0.
     mp.mp.dps = dps
     px = mp.mpf(p0)
     pz = mp.mpf(p0)
@@ -84,10 +82,7 @@ def simulateLevelStatsV2(pStar, delta, levels, nTrees, batchTrees, seed):
         b = min(batchTrees, nTrees - nDone)
         leaves = rng.uniform(lo, hi, size=(b, nLeaves))
 
-        #process channels sequentially rather than holding both at once, to keep peak memory
-        #down: the elementwise majorityFail3/parityFail3 formulas each spawn several
-        #same-size temporaries, and holding curX and curZ's full level-1 arrays alive together
-        #was enough to exhaust memory on this machine
+        #process channels sequentially rather than holding both at once, to keep peak memory down: the elementwise majorityFail3/parityFail3 formulas each spawn several same-size temporaries, and holding curX and curZ's full level-1 arrays alive together was enough to exhaust memory on this machine
         allLevelsX = []
         cur = leaves
         for lvl in range(1, levels + 1):

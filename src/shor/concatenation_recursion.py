@@ -10,9 +10,7 @@ import json
 import os
 import time
 
-#OpenBLAS's threaded allocator has thrown spurious ArrayMemoryError on modest-sized arrays
-#(tens of MB) under this workload. Nothing here is BLAS-bound (pure numpy ufuncs), so forcing
-#single-threaded BLAS costs nothing and avoids the crash. Must be set before numpy is imported.
+#OpenBLAS's threaded allocator has thrown spurious ArrayMemoryError on modest-sized arrays (tens of MB) under this workload. Nothing here is BLAS-bound (pure numpy ufuncs), so forcing single-threaded BLAS costs nothing and avoids the crash. Must be set before numpy is imported.
 os.environ.setdefault("OPENBLAS_NUM_THREADS", "1")
 os.environ.setdefault("OMP_NUM_THREADS", "1")
 
@@ -36,9 +34,7 @@ def F(p):
 
 
 def combineBlockOf9(children):
-    #children: array (...,9) grouped as 3 sub-blocks of 3, matching the Shor code's physical
-    #layout 0-2,3-5,6-8. Same majority-of-majority rule as F, but allows the 9 inputs to
-    #differ, needed once disorder makes siblings non-identical.
+    #children: array (...,9) grouped as 3 sub-blocks of 3, matching the Shor code's physical layout 0-2,3-5,6-8. Same majority-of-majority rule as F, but allows the 9 inputs to differ, needed once disorder makes siblings non-identical.
     qA = majorityFail3(children[..., 0], children[..., 1], children[..., 2])
     qB = majorityFail3(children[..., 3], children[..., 4], children[..., 5])
     qC = majorityFail3(children[..., 6], children[..., 7], children[..., 8])
@@ -46,8 +42,7 @@ def combineBlockOf9(children):
 
 
 def findFixedPoint(lo=0.3, hi=0.7, tol=1e-13):
-    #bisection on F(p)-p. 0, 1, and 0.5 are all fixed points; bracket around 0.5 to land on
-    #the nontrivial threshold instead of the trivial ones at 0/1.
+    #bisection on F(p)-p. 0, 1, and 0.5 are all fixed points; bracket around 0.5 to land on the nontrivial threshold instead of the trivial ones at 0/1.
     def g(p):
         return F(p) - p
 
@@ -68,10 +63,7 @@ def numericalDerivative(func, x, h=1e-6):
 
 
 def simulateLevelStats(pStar, delta, levels, nTrees, batchTrees, seed):
-    #Vectorized bottom-up evaluation: draw all 9**levels leaves for a batch of trees at once,
-    #then repeatedly fold groups of 9 into their parent via combineBlockOf9, accumulating a
-    #streaming sum/sumsq/count per level. Storing every node at low levels (up to
-    #nTrees*9**5 values at level 1) would blow up memory, so only the running moments are kept.
+    #Vectorized bottom-up evaluation: draw all 9**levels leaves for a batch of trees at once, then repeatedly fold groups of 9 into their parent via combineBlockOf9, accumulating a streaming sum/sumsq/count per level. Storing every node at low levels (up to nTrees*9**5 values at level 1) would blow up memory, so only the running moments are kept.
     rng = np.random.default_rng(seed)
     nLeaves = 9 ** levels
     lo = np.clip(pStar * (1 - delta), 0.0, 1.0)
@@ -110,8 +102,7 @@ def simulateLevelStats(pStar, delta, levels, nTrees, batchTrees, seed):
 
 
 def addRatios(stats, levels):
-    #ratio of relative width at level k over level k-1, to compare against Pan's guessed 2/3
-    #self-averaging factor
+    #ratio of relative width at level k over level k-1, to compare against Pan's guessed 2/3 self-averaging factor
     ratios = {}
     for lvl in range(2, levels + 1):
         prev, cur = stats[lvl - 1]["relWidth"], stats[lvl]["relWidth"]
@@ -120,17 +111,13 @@ def addRatios(stats, levels):
 
 
 def majorityFailN(n, p):
-    #P(more than n/2 of n iid Bernoulli(p) trials), n odd, exact via the binomial survival
-    #function (safe for large n where direct summation would overflow/underflow)
+    #P(more than n/2 of n iid Bernoulli(p) trials), n odd, exact via the binomial survival function (safe for large n where direct summation would overflow/underflow)
     thresh = n // 2
     return binom.sf(thresh, n, p)
 
 
 def squareFamilyCheck(pValues, mValues):
-    #Reproduces Pan's formula for the "square" (2n+1)^2-qubit family under a single
-    #non-concatenated parity-style decoder: q_m = [1-(1-2p)^m]/2. q_m -> 1/2 as m grows for
-    #any p in (0,1), so no p* separates "growing helps" from "growing hurts": this family
-    #has no genuine threshold.
+    #Reproduces Pan's formula for the "square" (2n+1)^2-qubit family under a single non-concatenated parity-style decoder: q_m = [1-(1-2p)^m]/2. q_m -> 1/2 as m grows for any p in (0,1), so no p* separates "growing helps" from "growing hurts": this family has no genuine threshold.
     rows = []
     for p in pValues:
         qm = {m: (1 - (1 - 2 * p) ** m) / 2 for m in mValues}
@@ -139,11 +126,7 @@ def squareFamilyCheck(pValues, mValues):
 
 
 def rectangularFamilyCheck(pValues, nInner, nOuterValues):
-    #Generalized (possibly asymmetric) Shor-type block [[nInner*nOuter,1,min(nInner,nOuter)]]
-    #with genuine majority-vote decoding at both the inner and outer level (unlike the square
-    #family's parity-style q_m). nInner is held fixed while nOuter grows unevenly (9,81,729
-    #total qubits via nOuter=3,27,243), the "rectangular" case since nInner != nOuter once
-    #nOuter > 3. Confirms a real threshold at p*=0.5 survives as the block grows.
+    #Generalized (possibly asymmetric) Shor-type block [[nInner*nOuter,1,min(nInner,nOuter)]] with genuine majority-vote decoding at both the inner and outer level (unlike the square family's parity-style q_m). nInner is held fixed while nOuter grows unevenly (9,81,729 total qubits via nOuter=3,27,243), the "rectangular" case since nInner != nOuter once nOuter > 3. Confirms a real threshold at p*=0.5 survives as the block grows.
     rows = []
     for p in pValues:
         failProb = {}

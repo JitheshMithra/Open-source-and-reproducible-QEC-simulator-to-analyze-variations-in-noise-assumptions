@@ -43,8 +43,7 @@ _MASK_Z = _failMask("Z")
 
 
 def exactBlockFailProb(p9, mask):
-    #p9: (..., 9) array of per-qubit probabilities. Returns (...,) exact failure probability
-    #via brute-force weighted sum over all 512 error-pattern subsets (vectorized).
+    #p9: (..., 9) array of per-qubit probabilities. Returns (...,) exact failure probability via brute-force weighted sum over all 512 error-pattern subsets (vectorized).
     p9 = np.asarray(p9)
     shape = p9.shape[:-1]
     #subsetProb: (..., 512), built by broadcasting each qubit's p or (1-p) per subset
