@@ -1,4 +1,4 @@
-## Report Links & PDF
+## Report DOIs
 
 **v1:** https://zenodo.org/records/19410366
 
