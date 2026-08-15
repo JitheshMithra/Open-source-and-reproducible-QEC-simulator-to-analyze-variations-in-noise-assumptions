@@ -11,7 +11,7 @@
 [![Featured in The Quantum Insider](https://img.shields.io/badge/Featured-The%20Quantum%20Insider-00CED1)](https://thequantuminsider.com/2026/07/22/guest-post-what-a-high-school-student-found-when-he-stress-tested-a-quantum-benchmark/)
 
 <p align="center">
-   <img width="1024" height="276" alt="logos (2)" src="https://github.com/user-attachments/assets/7fd35b04-2904-4f4c-9f3e-a8718078596d" />
+   <img width="1024" height="768" alt="logos (3)" src="https://github.com/user-attachments/assets/d585d49f-43fd-4639-a6e3-28e9205c3758" />
 </p>
 
 
