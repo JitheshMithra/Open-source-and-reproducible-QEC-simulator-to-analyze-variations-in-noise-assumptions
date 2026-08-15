@@ -4,7 +4,6 @@
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.19410365.svg)](https://doi.org/10.5281/zenodo.19410365)
 [![License](https://img.shields.io/badge/License-MIT-green)](https://github.com/JitheshMithra/QECops/blob/main/LICENSE)
-[![Python](https://img.shields.io/badge/Python-3.10-blue)](https://www.python.org/)
 [![Qiskit](https://img.shields.io/badge/Qiskit-Aer-6929C4)](https://qiskit.github.io/qiskit-aer/)
 ![Field](https://img.shields.io/badge/Field-quant--ph-purple) 
 
